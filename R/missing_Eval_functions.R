@@ -36,7 +36,6 @@ variableStatistics<- function (data, correlation_method='pearson', gof_method='k
 
   require(matrixStats)
   require(stats)
-  require(ADGofTest)
   require(gamlss)
   options(scipen=999)
 
