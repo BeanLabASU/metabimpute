@@ -11,7 +11,7 @@ impute(data, method, local = TRUE, reps)
 \arguments{
 \item{data}{data matrix with simulated data}
 
-\item{method}{the imputation method Note GSimp_Real is for real non-neg data. GSimp_Sim is for already.
+\item{method}{the imputation method Note GSimp_Real is for real non-neg data.
 method=c('RF', "BPCA", 'QRILC', 'GSimp_Log', 'Rep_Imp_HM',"Rep_Imp_mean", "Rep_Imp_median", "Rep_Imp_min","Rep_Zero", "Rep_Imp_RF",
 "Rep_Imp_GSimp", "Rep_Imp_QRILC","Rep_Imp_BPCA",'min',"halfmin", 'mean', 'median', 'zero')}
 

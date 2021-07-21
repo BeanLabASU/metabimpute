@@ -2,7 +2,7 @@
 #' This functions contains different imputation methods and imputes the data with all
 #' the different imputation methods
 #' @param data data matrix with simulated data
-#' @param method the imputation method Note GSimp_Real is for real non-neg data. GSimp_Sim is for already.
+#' @param method the imputation method Note GSimp_Real is for real non-neg data.
 #' method=c('RF', "BPCA", 'QRILC', 'GSimp_Log', 'Rep_Imp_HM',"Rep_Imp_mean", "Rep_Imp_median", "Rep_Imp_min","Rep_Zero", "Rep_Imp_RF",
 #' "Rep_Imp_GSimp", "Rep_Imp_QRILC","Rep_Imp_BPCA",'min',"halfmin", 'mean', 'median', 'zero')
 #' @param local a boolean to determine if local rep_impute method is to be used, default to true.
@@ -15,7 +15,6 @@
 #' @examples
 #' imputed_data <- impute(data=miss_data, methods=imputation_methods, local=T, reps=3)
 #' #'####################################################
-
 impute <- function(data, method, local=TRUE, reps) {
   require(doParallel)
   require(missForest)
@@ -613,7 +612,7 @@ pre_processing_GS_wrapper <- function(data) {
 imputeMulti<- function(methods, data, reps=NULL){
   results<-list()
   for (i in 1:length(methods)){
-    results[[i]]<-impute(data, methods = methods[i], reps = reps)
+    results[[i]]<-impute(data, method = methods[i], reps = reps)
     print(paste("imputed using", methods[i], sep=" "))
     names(results)[i]<-methods[i]
 
