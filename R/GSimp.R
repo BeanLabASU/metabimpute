@@ -194,7 +194,7 @@ multi_impute <- function(data_miss, iters_each=100, iters_all=20, initial='qrilc
       cl <- makeCluster(n_cores)
       registerDoParallel(cl)
       core_res <- foreach (k=miss_col_idx, .combine='cbind_abind', .export=c('single_impute_iters', 'rnorm_trunc'), .packages=c('magrittr')) %dopar% {
-        source('Prediction_funcs.R')
+        #source('Prediction_funcs.R')
         gibbs_sort_temp <- gibbs_sort[gibbs_sort$col==k, ]
         y_imp_res <- single_impute_iters(data_imp[, -k], data_imp[, k], data_miss[, k], imp_model=imp_model,
                                          lo=lo_vec[k], hi=hi_vec[k], iters_each=iters_each[i], gibbs=gibbs_sort_temp$row)
