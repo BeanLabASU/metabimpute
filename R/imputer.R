@@ -167,7 +167,7 @@ impute <- function(data, method, local=TRUE, reps) {
       rownames(newData)<-rownames(data)
       colnames(newData)<-colnames(data)[1:(ncol(data)-1)]
 
-      results_data<newData
+      results_data<-newData
 
 
 
@@ -200,7 +200,7 @@ impute <- function(data, method, local=TRUE, reps) {
     rownames(newData)<-rownames(data)
     colnames(newData)<-colnames(data)[1:(ncol(data)-1)]
 
-    results_data<newData
+    results_data<-newData
 
 
   }
@@ -232,7 +232,7 @@ impute <- function(data, method, local=TRUE, reps) {
     rownames(newData)<-rownames(data)
     colnames(newData)<-colnames(data)[1:(ncol(data)-1)]
 
-    results_data<newData
+    results_data<-newData
 
 
 
@@ -265,7 +265,7 @@ impute <- function(data, method, local=TRUE, reps) {
     rownames(newData)<-rownames(data)
     colnames(newData)<-colnames(data)[1:(ncol(data)-1)]
 
-    results_data<newData
+    results_data<-newData
 
 
 
@@ -294,10 +294,10 @@ impute <- function(data, method, local=TRUE, reps) {
     rownames(newData)<-rownames(data)
     colnames(newData)<-colnames(data)[1:(ncol(data)-1)]
 
-    results_data<newData
+    results_data<-newData
   }
 
-  if(methods=="Rep_Imp_RF"){
+  if(method=="Rep_Imp_RF"){
     rep_groups <- c(rep(1:(nrow(data)/reps), times=1, each=reps))
     data[data==0]<-NA
     data<- cbind(data,rep_groups)
@@ -430,14 +430,37 @@ impute <- function(data, method, local=TRUE, reps) {
 
   if (method=='min' | method=='MIN') {
     imputed_data <- data
-    foreach (data_column=which(methods == "min")) %do% {
-      method <- methods[data_column]
-      impu_value <- min(data[,data_column], na.rm=TRUE)
-      results_data[is.na(imputed_data[,data_column]), data_column] <- impu_value
+    if(local==T){
+      rep_groups <- c(rep(1:(nrow(data)/reps), times=1, each=reps))
+      data<- cbind(data,rep_groups)
+
+      newData <-data.frame(matrix(nrow=nrow(data),ncol=ncol(data)-1))
+      for (i in 1:length(unique(data$rep_groups))){
+        tempData<-data[data[,ncol(data)]==i,]
+        for (j in 1:(ncol(data)-1)){
+          min<- min(tempData[,j],na.rm = TRUE)
+          tempData[is.na(tempData[,j]),j]<- min
+
+          newData[((reps*i)-(reps-1)):(reps*i),]<-tempData[,1:(ncol(tempData)-1)]
+        }
+      }
+      rownames(newData)<-rownames(data)
+      colnames(newData)<-colnames(data)[1:(ncol(data)-1)]
+
+      results_data<-newData
+
+
+    }else{
+      for(i in 1:ncol(data)){
+        min<-min(data[,i],na.rm=TRUE)
+        imputed_data[is.na(data[,i]),i]<-min
+
+      }
+      results_data<-imputed_data
     }
 
   }
-
+}
 
 
 
@@ -462,15 +485,16 @@ impute <- function(data, method, local=TRUE, reps) {
       rownames(newData)<-rownames(data)
       colnames(newData)<-colnames(data)[1:(ncol(data)-1)]
 
-      results_data<newData
+      results_data<-newData
 
 
     }else{
-    foreach (data_column=which(methods == "halfmin")) %do% {
-      method <- methods[data_column]
-      impu_value <- (min(data[,data_column], na.rm=TRUE)/2)
-      results_data[is.na(imputed_data[,data_column]), data_column] <- impu_value
-    }
+      for(i in 1:ncol(data)){
+        halfmin<-min(data[,i],na.rm=TRUE)/2
+        imputed_data[is.na(data[,i]),i]<-halfmin
+
+      }
+      results_data<-imputed_data
 
     }
 
@@ -495,20 +519,21 @@ impute <- function(data, method, local=TRUE, reps) {
       rownames(newData)<-rownames(data)
       colnames(newData)<-colnames(data)[1:(ncol(data)-1)]
 
-      results_data<newData
+      results_data<-newData
 
 
     }else{
-      foreach (data_column=which(methods == "mean")) %do% {
-      method <- methods[data_column]
-      impu_value <- round(mean(data[,data_column], na.rm=TRUE),digits = 2)
-      results_data[is.na(imputed_data[,data_column]), data_column] <- impu_value
-    }
+      for(i in 1:ncol(data)){
+        mean<-mean(data[,i],na.rm=TRUE)
+        imputed_data[is.na(data[,i]),i]<-mean
+
+      }
+      results_data<-imputed_data
 
     }
   }
 
-  if ("median" %in% methods || "MEDIAN" %in% methods){
+  if (method=='median' | method=='MEDIAN'){
     imputed_data <- data
 
     if(local==T){
@@ -528,25 +553,25 @@ impute <- function(data, method, local=TRUE, reps) {
       rownames(newData)<-rownames(data)
       colnames(newData)<-colnames(data)[1:(ncol(data)-1)]
 
-      results_data<newData
+      results_data<-newData
 
 
     }else{
-    foreach (data_column=which(methods == "median")) %do% {
-      method <- methods[data_column]
-      impu_value <- round(median(data[,data_column], na.rm=TRUE),digits = 2)
-      results_data[is.na(imputed_data[,data_column]), data_column] <- impu_value
-    }
+      for(i in 1:ncol(data)){
+        median<-median(data[,i],na.rm=TRUE)
+        imputed_data[is.na(data[,i]),i]<-median
+
+      }
+      results_data<-imputed_data
 
   }}
 
   if (method=='zero' |method=='ZERO'){
     imputed_data <- data
 
-    foreach (data_column=which(methods == "zero")) %do% {
-      method <- methods[data_column]
-      impu_value <- 0
-      results_data[is.na(imputed_data[,data_column]), data_column] <- impu_value
+    for(i in 1:ncol(data)){
+      imputed_data[is.na(data[,i]),i]<-0
+
     }
 
   }
