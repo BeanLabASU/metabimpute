@@ -10,7 +10,8 @@ detect.MCAR.MNAR.MAR(
   MissingVar,
   MAR_MNAR,
   alpha = 0.05,
-  percentage = 0.6
+  percentage = 0.6,
+  gof_Method = "kolmogorov"
 )
 }
 \arguments{
@@ -25,6 +26,8 @@ data matrix}
 Significance level ,  default is 0.05}
 
 \item{percentage}{}
+
+\item{gof_Method}{method of goodness of fit testing, 'kolmogorov' or 'cucconi'}
 }
 \value{
 results

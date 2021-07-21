@@ -28,7 +28,7 @@ binaryMatrix<- function(data){
 #' @param data A data frame (rows as samples, columns as variables)
 #' @param gof_method the method to compute goodness of fit with left-censored data 'kolmogorov' (default), 'cucconi'
 #' @param correlation_method the method to compute correlations 'pearson' (default), 'spearman', 'kendall'
-#' @return result A matrix containing: percent missingness, quartile cutoffs, mean, missingness type, variance, distribution
+#' @return result A list containing a matrix of: percent missingness, quartile cutoffs, mean, missingness type, variance, distribution; also a matrix containing missing proportions
 #' @export
 
 variableStatistics<- function (data, correlation_method='pearson', gof_method='kolmogorov'){
@@ -66,15 +66,15 @@ variableStatistics<- function (data, correlation_method='pearson', gof_method='k
   }
 
   detect_MNAR<- detect.miss.MNAR.MAR(data, alpha=0.05, correlation_method = correlation_method)
-  print('check1')
+
   MissingVar<-detect_MNAR[[1]]
 
   MAR_MNAR<- detect_MNAR[[3]]
   missigness <- detect.MCAR.MNAR.MAR (data,MissingVar,MAR_MNAR,alpha=0.05, percentage=.6, gof_Method=gof_method)
-  print('check2')
+
   print(missigness)
   listMiss <- detect_missingness_type(missigness)
-  print('check3')
+  print(length(listMiss))
 
 
 

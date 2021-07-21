@@ -4,13 +4,21 @@
 \alias{variableStatistics}
 \title{variableStatistics}
 \usage{
-variableStatistics(data)
+variableStatistics(
+  data,
+  correlation_method = "pearson",
+  gof_method = "kolmogorov"
+)
 }
 \arguments{
 \item{data}{A data frame (rows as samples, columns as variables)}
+
+\item{correlation_method}{the method to compute correlations 'pearson' (default), 'spearman', 'kendall'}
+
+\item{gof_method}{the method to compute goodness of fit with left-censored data 'kolmogorov' (default), 'cucconi'}
 }
 \value{
-result A matrix containing: percent missingness, quartile cutoffs, mean, missingness type, variance, distribution
+result A list containing a matrix of: percent missingness, quartile cutoffs, mean, missingness type, variance, distribution; also a matrix containing missing proportions
 }
 \description{
 A function that does various statistics on missingness per variables

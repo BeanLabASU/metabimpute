@@ -4,12 +4,14 @@
 \alias{imputeMulti}
 \title{imputeMulti}
 \usage{
-imputeMulti(methods, data, trip_groups = NULL)
+imputeMulti(methods, data, reps = NULL)
 }
 \arguments{
 \item{methods}{a list of imputation methods}
 
 \item{data}{the dataset with missing values contained}
+
+\item{reps}{number of replicates, if applicable}
 }
 \value{
 a list containing the dataframes of the imputed data

@@ -9,7 +9,7 @@ ICC_Change_Plot(iccMeasure, methods, measure)
 \arguments{
 \item{iccMeasure}{matrix of a measure of ICC change from ICC Eval}
 
-\item{methods}{list of methods of imputation with zero matrix last}
+\item{methods}{list of methods of imputation with baseline comparison matrix last}
 
 \item{measure}{a string indicating which measurement type (difference, absolute value or sum of squeares) to be used for title of plot}
 }

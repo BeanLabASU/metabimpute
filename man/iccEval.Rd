@@ -4,16 +4,18 @@
 \alias{iccEval}
 \title{iccEval}
 \usage{
-iccEval(origData, groups, imputed, methods)
+iccEval(origData, reps, imputed, methods)
 
-iccEval(origData, groups, imputed, methods)
+iccEval(origData, reps, imputed, methods)
 }
 \arguments{
-\item{groups}{this is a factor containing group levels}
+\item{reps}{number of replicates}
 
 \item{imputed}{this is a list of imputed dataframes}
 
 \item{methods}{this is a vector of all the imputation methods used}
+
+\item{groups}{this is a factor containing group levels}
 }
 \value{
 a list of various measures

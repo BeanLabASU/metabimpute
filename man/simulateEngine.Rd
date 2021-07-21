@@ -16,7 +16,7 @@ simulateEngine(
   methodsImp,
   methodsEval,
   simulate_Data = T,
-  trip_groups
+  reps
 )
 }
 \arguments{

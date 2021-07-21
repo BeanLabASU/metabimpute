@@ -9,7 +9,7 @@ if variables tend to be missing together (MAR) or not (MCAR).
 Kabacoff, Robert I. R in Action. manning, 2010.
 From juuussi/impute-metabo}
 \usage{
-detect.miss.MNAR.MAR(data, alpha = 0.05)
+detect.miss.MNAR.MAR(data, alpha = 0.05, correlation_method)
 }
 \arguments{
 \item{data}{,
