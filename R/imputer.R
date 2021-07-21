@@ -2,7 +2,9 @@
 #' This functions contains different imputation methods and imputes the data with all
 #' the different imputation methods
 #' @param data data matrix with simulated data
-#' @param method the imputation method Note GSimp_Real is for real non-neg data. GSimp_Sim is for already
+#' @param method the imputation method Note GSimp_Real is for real non-neg data. GSimp_Sim is for already.
+#' method=c('RF', "BPCA", 'QRILC', 'GSimp_Log', 'Rep_Imp_HM',"Rep_Imp_mean", "Rep_Imp_median", "Rep_Imp_min","Rep_Zero", "Rep_Imp_RF",
+#' "Rep_Imp_GSimp", "Rep_Imp_QRILC","Rep_Imp_BPCA",'min',"halfmin", 'mean', 'median', 'zero')
 #' @param local a boolean to determine if local rep_impute method is to be used, default to true.
 #' @param reps the number of replicate groups
 #' simulated data that doesn't require log preprocessing.
@@ -11,7 +13,7 @@
 #' @export
 #'
 #' @examples
-#' imputed_data <- impute(data=miss_data, methods=imputation_methods)
+#' imputed_data <- impute(data=miss_data, methods=imputation_methods, local=T, reps=3)
 #' #'####################################################
 
 impute <- function(data, method, local=TRUE, reps) {
@@ -25,18 +27,10 @@ impute <- function(data, method, local=TRUE, reps) {
   require(magrittr)
   require(matrixStats)
 
-  #source('MetabImpute/R/MVI_global.R')
-  #source('MetabImpute/R/GSimp.R')
 
-  #if (length(methods) != 1 & length(methods) != ncol(data)) {
-  #  stop("Methods needs to be either one value or of the same length as number of columns in data.")
- # }
   imputed_data <- matrix(NA,nrow = nrow(data),ncol = ncol(data))
   results_data <- data
 
-  #if (length(methods) == 1) {
-  #  methods <- rep(methods, times=ncol(data))
-  #}
 
 
   if (method == 'RF') {
@@ -48,21 +42,6 @@ impute <- function(data, method, local=TRUE, reps) {
 
 
   }
-
-  if (method == "PPCA") {
-    # Do cross validation with ppca for component 2:10
-    #esti <- kEstimate(Matrix= data, method = "ppca", evalPcs = 2:10, nruncv = 1 , em="nrmsep")
-    esti<-kEstimateFast(Matrix=data, method="ppca", evalPcs=1:10, em='q2')
-    # The best result was obtained for this number of PCs:esti$bestNPcs
-    pc <- pcaMethods::pca(object = data,nPcs=esti$bestNPcs, method="ppca")
-    #index <- which(methods == "PPCA")
-    imputed_data <- completeObs(pc)
-
-    index <- which(methods == "PPCA")
-    results_data[,index] <- imputed_data[,index]
-
-  }
-
 
   if (method == "BPCA"){
     # bayesian principal component analysis
@@ -460,10 +439,6 @@ impute <- function(data, method, local=TRUE, reps) {
     }
 
   }
-
-
-
-
 
   if (method=="halfmin") {
     imputed_data <- data

@@ -6,12 +6,14 @@
 This functions contains different imputation methods and imputes the data with all
 the different imputation methods}
 \usage{
-impute(data, methods, local = TRUE, reps)
+impute(data, method, local = TRUE, reps)
 }
 \arguments{
 \item{data}{data matrix with simulated data}
 
-\item{methods}{vector containing the method names. Note GSimp_Real is for real non-neg data. GSimp_Sim is for already}
+\item{method}{the imputation method Note GSimp_Real is for real non-neg data. GSimp_Sim is for already.
+method=c('RF', "BPCA", 'QRILC', 'GSimp_Log', 'Rep_Imp_HM',"Rep_Imp_mean", "Rep_Imp_median", "Rep_Imp_min","Rep_Zero", "Rep_Imp_RF",
+"Rep_Imp_GSimp", "Rep_Imp_QRILC","Rep_Imp_BPCA",'min',"halfmin", 'mean', 'median', 'zero')}
 
 \item{local}{a boolean to determine if local rep_impute method is to be used, default to true.}
 
@@ -19,7 +21,7 @@ impute(data, methods, local = TRUE, reps)
 simulated data that doesn't require log preprocessing.}
 }
 \value{
-the matrix containing the imputed data
+results_data the matrix containing the imputed data
 }
 \description{
 Title impute
@@ -27,6 +29,6 @@ This functions contains different imputation methods and imputes the data with a
 the different imputation methods
 }
 \examples{
-imputed_data <- impute(data=miss_data, methods=imputation_methods)
+imputed_data <- impute(data=miss_data, methods=imputation_methods, local=T, reps=3)
 #'####################################################
 }
