@@ -304,8 +304,8 @@ impute <- function(data, method, local=TRUE, reps) {
     }
 
     results_data<-missRanger(data=as.data.frame(newData), num.trees=100)
-    rownames(results_data)<-rownames(data)[-c(ncol(data))]
-    colnames(results_data)<-colnames(data)[-c(ncol(data))]
+    rownames(results_data)<-rownames(data)[1:(ncol(data)-1)]
+    colnames(results_data)<-colnames(data)[1:(ncol(data)-1)]
 
 
   }
@@ -664,6 +664,7 @@ imputeMulti<- function(methods, data, reps=NULL){
 
 QRILC_Prime<-function (dataSet.mvs, tune.sigma = 1)
 {
+  require(gmm)
   nFeatures = dim(dataSet.mvs)[1]
   nSamples = dim(dataSet.mvs)[2]
   dataSet.imputed = dataSet.mvs
