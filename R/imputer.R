@@ -14,7 +14,7 @@
 #' imputed_data <- impute(data=miss_data, methods=imputation_methods)
 #' #'####################################################
 
-impute <- function(data, methods, local=TRUE, reps) {
+impute <- function(data, method, local=TRUE, reps) {
   require(doParallel)
   require(missForest)
   require(missRanger)
@@ -28,15 +28,15 @@ impute <- function(data, methods, local=TRUE, reps) {
   #source('MetabImpute/R/MVI_global.R')
   #source('MetabImpute/R/GSimp.R')
 
-  if (length(methods) != 1 & length(methods) != ncol(data)) {
-    stop("Methods needs to be either one value or of the same length as number of columns in data.")
-  }
+  #if (length(methods) != 1 & length(methods) != ncol(data)) {
+  #  stop("Methods needs to be either one value or of the same length as number of columns in data.")
+ # }
   imputed_data <- matrix(NA,nrow = nrow(data),ncol = ncol(data))
   results_data <- data
 
-  if (length(methods) == 1) {
-    methods <- rep(methods, times=ncol(data))
-  }
+  #if (length(methods) == 1) {
+  #  methods <- rep(methods, times=ncol(data))
+  #}
 
 
   if (method == 'RF') {
