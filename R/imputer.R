@@ -36,7 +36,10 @@ impute <- function(data, method, local=TRUE, reps) {
 
     #imputed_data <- missForest::missForest(xmis = data,maxiter = 10,verbose = FALSE, parallelize = 'no')$ximp
     imputed_data<-missRanger(data=as.data.frame(data), num.trees=100)
+    rownames(imputed_data)<-rownames(data)
+    colnames(imputed_data)<-colnames(data)
     results_data <- imputed_data
+
 
 
   }
@@ -47,6 +50,8 @@ impute <- function(data, method, local=TRUE, reps) {
 
     ## Get the estimated complete observations
     imputed_data <- completeObs(pc)
+    rownames(imputed_data)<-rownames(data)
+    colnames(imputed_data)<-colnames(data)
     results_data <- imputed_data
 
   }
@@ -56,6 +61,8 @@ impute <- function(data, method, local=TRUE, reps) {
 
     qrilc<- QRILC_Prime(dataSet.mvs = data)
     imputed_data<-qrilc
+    rownames(imputed_data)<-rownames(data)
+    colnames(imputed_data)<-colnames(data)
     results_data<- imputed_data
   }
 
@@ -94,6 +101,8 @@ impute <- function(data, method, local=TRUE, reps) {
     #imputed_data<-pre_processing_GS_wrapper(data)
     #index<- which(methods=="GSimp_Real")
     results_data<- data_imp
+    rownames(results_data)<-rownames(data)
+    colnames(results_data)<-colnames(data)
 
 
 
@@ -109,7 +118,8 @@ impute <- function(data, method, local=TRUE, reps) {
                                     lo=-Inf, hi= 'min', n_cores=4,
                                     imp_model='glmnet_pred')
     imputed_data <- result$data_imp
-    index<-which(methods=="GSimp_Sim")
+    rownames(imputed_data)<-rownames(data)
+    colnames(imputed_data)<-colnames(data)
     results_data<-imputed_data
   }
 
