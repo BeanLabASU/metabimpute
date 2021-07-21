@@ -10,6 +10,5 @@ pre_processing_GS_wrapper(data)
 imputed dataframe.
 }
 \description{
-This does the imputation from WandeRum/GSimp. It does rely on MVI_Global.R and Prediction_funcs.R which I
-will not document as functions.
+This does the imputation from WandeRum/GSimp. It does rely on MVI_Global.R and Prediction_funcs.R
 }

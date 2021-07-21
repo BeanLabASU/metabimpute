@@ -152,7 +152,7 @@ impute <- function(data, methods, local=TRUE, reps) {
   if("Rep_Imp_HM" %in% methods){
     rep_groups <- c(rep(1:(nrow(data)/reps), times=1, each=reps))
     data[data==0]<-NA
-    data<- cbind(data,trip_groups)
+    data<- cbind(data,rep_groups)
 
       newData <-data.frame(matrix(nrow=nrow(data),ncol=ncol(data)-1))
       for (i in 1:length(unique(data$rep_groups))){
@@ -471,7 +471,7 @@ impute <- function(data, methods, local=TRUE, reps) {
 
   }
 
-  if ("median" %in% methods || "MEAN" %in% methods){
+  if ("median" %in% methods || "MEDIAN" %in% methods){
     imputed_data <- data
     foreach (data_column=which(methods == "median")) %do% {
       method <- methods[data_column]
@@ -515,8 +515,7 @@ impute <- function(data, methods, local=TRUE, reps) {
 
 #' GSimp function
 #'
-#' This does the imputation from WandeRum/GSimp. It does rely on MVI_Global.R and Prediction_funcs.R which I
-#' will not document as functions.
+#' This does the imputation from WandeRum/GSimp. It does rely on MVI_Global.R and Prediction_funcs.R
 #' @param data
 #' @return imputed dataframe.
 pre_processing_GS_wrapper <- function(data) {
@@ -580,8 +579,8 @@ imputeMulti<- function(methods, data, reps=NULL){
 
 #'QRILC_Prime
 #'
-#'Based off of the QRILC method created by Cosmin Lazar at https://www.rdocumentation.org/packages/imputeLCMD/versions/2.0/topics/impute.QRILC
-#' ammended to appropriately handle cases in which there are columns without any missing values
+#'Modified from source code written by Cosmin Lazar at https://www.rdocumentation.org/packages/imputeLCMD/versions/2.0/topics/impute.QRILC
+#' ammended to handle cases in which there are columns without any missing values. Accessed from git
 #'
 #'@param dataSet.mvs the data to be imputed which can include non-missing rows which will be left untouched
 #'@param tune.sigma

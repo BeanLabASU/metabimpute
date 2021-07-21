@@ -3,7 +3,8 @@
 \name{simulate}
 \alias{simulate}
 \title{simulate
-function to simulate a similar data set with similar correlation matrix.}
+function to simulate a similar data set with similar correlation matrix.
+modified from source code written by Tibor V. Varga from https://github.com/Tirgit/missCompare}
 \usage{
 simulate(rownum, colnum, corMat)
 }
@@ -13,10 +14,6 @@ simulate(rownum, colnum, corMat)
 \item{colnum}{number of columns of the original data matrix}
 
 \item{corMat}{correlation matrix.}
-
-\item{meanval}{mean for normalization}
-
-\item{sdval}{standard deviation for normalization}
 }
 \value{
 a matrix of the original size of your data matrix with simulated values (normalized)
@@ -24,4 +21,5 @@ a matrix of the original size of your data matrix with simulated values (normali
 \description{
 simulate
 function to simulate a similar data set with similar correlation matrix.
+modified from source code written by Tibor V. Varga from https://github.com/Tirgit/missCompare
 }

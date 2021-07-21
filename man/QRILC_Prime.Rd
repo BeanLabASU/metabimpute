@@ -13,6 +13,6 @@ QRILC_Prime(dataSet.mvs, tune.sigma = 1)
 imputed data frame
 }
 \description{
-Based off of the QRILC method created by Cosmin Lazar at https://www.rdocumentation.org/packages/imputeLCMD/versions/2.0/topics/impute.QRILC
-ammended to appropriately handle cases in which there are columns without any missing values
+Modified from source code written by Cosmin Lazar at https://www.rdocumentation.org/packages/imputeLCMD/versions/2.0/topics/impute.QRILC
+ammended to handle cases in which there are columns without any missing values. Accessed from git
 }

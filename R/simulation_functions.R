@@ -28,12 +28,11 @@ correlationMatrix<-function(data){
 
 #' simulate
 #' function to simulate a similar data set with similar correlation matrix.
+#' modified from source code written by Tibor V. Varga from https://github.com/Tirgit/missCompare
 #'
 #' @param corMat correlation matrix.
 #' @param rownum number of rows of the original data matrix
 #' @param colnum number of columns of the original data matrix
-#' @param meanval mean for normalization
-#' @param sdval standard deviation for normalization
 #' @return a matrix of the original size of your data matrix with simulated values (normalized)
 #' @export
 
