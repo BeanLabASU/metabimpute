@@ -2,7 +2,12 @@ require(magrittr)
 require(missForest)
 require(abind)
 # Missing at Random Function ----------------------------------------------
+#'@export
 MAR_generate <- function(data, mis_prop = 0.5) {
+  require(magrittr)
+  require(missForest)
+  require(abind)
+
   all_idx <- which(data != Inf, arr.ind = T)
   rdm_idx <- sample(1:nrow(all_idx), round(nrow(all_idx)*mis_prop))
   slc_idx <- all_idx[rdm_idx, ]
@@ -12,7 +17,11 @@ MAR_generate <- function(data, mis_prop = 0.5) {
 }
 
 # column-wise NRMSE calculation -------------------------------------------
+#'@export
 nrmse_col <- function(data_imp, data_miss, data_true) {
+  require(magrittr)
+  require(missForest)
+  require(abind)
   idx_miss <- data_miss %>% colSums %>% is.na %>% which
   nrmse_vec <- c()
   for (idx in idx_miss) {
@@ -23,7 +32,11 @@ nrmse_col <- function(data_imp, data_miss, data_true) {
 }
 
 # MNAR imputation compare -------------------------------------------------
+#'@export
 MNAR_generate <- function (data_c, mis_var = 0.5, var_prop = seq(.3, .6, .1)) {
+  require(magrittr)
+  require(missForest)
+  require(abind)
   data_mis <- data_c
   if (is.numeric(mis_var)) var_mis_list <- sample(1:ncol(data_c), round(ncol(data_c)*mis_var))
   else if (is.character(mis_var)) var_mis_list <- which(colnames(data_c) %in% mis_var)
@@ -39,7 +52,11 @@ MNAR_generate <- function (data_c, mis_var = 0.5, var_prop = seq(.3, .6, .1)) {
 }
 
 # Scale and recover -------------------------------------------------------
+#'@export
 scale_recover <- function(data, method='scale', param_df = NULL) {
+  require(magrittr)
+  require(missForest)
+  require(abind)
   results <- list()
   data_res <- data
   if (!is.null(param_df)) {
@@ -60,7 +77,11 @@ scale_recover <- function(data, method='scale', param_df = NULL) {
 }
 
 # Multiplot 4 ggplot2 -----------------------------------------------------
+#'@export
 multiplot <- function(..., plotlist=NULL, file, cols=1, layout=NULL) {
+  require(magrittr)
+  require(missForest)
+  require(abind)
   library(grid)
 
   # Make a list from the ... arguments and plotlist

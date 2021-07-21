@@ -10,7 +10,14 @@ require(MASS)
 ## Source #
 
 ## Draw n samples from a truncated normal distribution N(mu, std^2|[lo, hi]) ##
+#'@export
 rnorm_trunc <- function (n, mu, std, lo=-Inf, hi=Inf) {
+  require(missForest)
+  require(imputeLCMD)
+  require(magrittr)
+  require(foreach)
+  require(doParallel)
+  require(MASS)
   p_lo <- pnorm(lo, mu, std)
   p_hi <- pnorm(hi, mu, std)
   p_hi[p_hi < .01] <- .01
@@ -20,7 +27,14 @@ rnorm_trunc <- function (n, mu, std, lo=-Inf, hi=Inf) {
 
 ## Initialize the missing data ##
 ## lsym will draw samples from the right tail of the distribution and transformed to the left tail
+#'@export
 miss_init <- function(miss_data, method=c('lsym', 'qrilc', 'rsym')[1]) {
+  require(missForest)
+  require(imputeLCMD)
+  require(magrittr)
+  require(foreach)
+  require(doParallel)
+  require(MASS)
   init_data <- miss_data
   if (method=='lsym') {
     for (i in 1:ncol(init_data)) {
@@ -53,7 +67,14 @@ miss_init <- function(miss_data, method=c('lsym', 'qrilc', 'rsym')[1]) {
 }
 
 ## Single missing variable imputation based on Gibbs sampler ##
+#'@export
 single_impute_iters <- function(x, y, y_miss, y_real=NULL, imp_model='glmnet_pred', lo=-Inf, hi=Inf, iters_each=100, gibbs=c()) {
+  require(missForest)
+  require(imputeLCMD)
+  require(magrittr)
+  require(foreach)
+  require(doParallel)
+  require(MASS)
   y_res <- y
   x <- as.matrix(x)
   na_idx <- which(is.na(y_miss))
@@ -91,9 +112,16 @@ single_impute_iters <- function(x, y, y_miss, y_real=NULL, imp_model='glmnet_pre
 ## lo/hi=numer; vector; functions like min/max/median/mean...
 ## initial=character ('qrilc'/'lysm'); initialized data maatrix
 ## n_cores=1 is sequentially (non-parallel) computing
+#'@export
 multi_impute <- function(data_miss, iters_each=100, iters_all=20, initial='qrilc', lo=-Inf, hi='min',
                          n_cores=1, imp_model='glmnet_pred', gibbs=data.frame(row=integer(), col=integer())) {
   ## Convert to data.frame ##
+  require(missForest)
+  require(imputeLCMD)
+  require(magrittr)
+  require(foreach)
+  require(doParallel)
+  require(MASS)
   data_miss %<>% data.frame()
 
   ## Make vector for iters_each ##
@@ -202,4 +230,5 @@ multi_impute <- function(data_miss, iters_each=100, iters_all=20, initial='qrilc
 
 
 # GS_impute ---------------------------------------------------------------
+#'@export
 GS_impute <- multi_impute

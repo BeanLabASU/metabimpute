@@ -14,8 +14,6 @@
 #' imputed_data <- impute(data=miss_data, methods=imputation_methods)
 #' #'####################################################
 
-setwd("C:/Users/TRF/Documents/R/MetabImpute/R")
-
 impute <- function(data, methods, local=TRUE, reps) {
   require(doParallel)
   require(missForest)
