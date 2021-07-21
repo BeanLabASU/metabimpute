@@ -101,7 +101,7 @@ iccEval<-function(origData, reps, imputed, methods){
 #' ICC Change Plot
 #'
 #'@param iccMeasure matrix of a measure of ICC change from ICC Eval
-#'@param methods list of methods of imputation with zero matrix last
+#'@param methods list of methods of imputation with baseline comparison matrix last
 #'@param measure a string indicating which measurement type (difference, absolute value or sum of squeares) to be used for title of plot
 #'
 #'@return a ggplot of measure of icc change with CIs
