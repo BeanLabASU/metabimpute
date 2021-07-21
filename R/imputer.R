@@ -154,6 +154,7 @@ impute <- function(data, method, local=TRUE, reps) {
 
 
 
+
   }
 
   if(method=="Rep_Imp_mean"){
@@ -186,6 +187,7 @@ impute <- function(data, method, local=TRUE, reps) {
     results_data<-newData
 
 
+
   }
 
   if(method=="Rep_Imp_median"){
@@ -216,6 +218,7 @@ impute <- function(data, method, local=TRUE, reps) {
     colnames(newData)<-colnames(data)[1:(ncol(data)-1)]
 
     results_data<-newData
+
 
 
 
@@ -254,6 +257,7 @@ impute <- function(data, method, local=TRUE, reps) {
 
 
 
+
   }
 
   if(method=="Rep_Zero"){
@@ -278,6 +282,8 @@ impute <- function(data, method, local=TRUE, reps) {
     colnames(newData)<-colnames(data)[1:(ncol(data)-1)]
 
     results_data<-newData
+    rownames(results_data)<-rownames(data)[-c(ncol(data))]
+    colnames(results_data)<-colnames(data)[-c(ncol(data))]
   }
 
   if(method=="Rep_Imp_RF"){
@@ -298,8 +304,8 @@ impute <- function(data, method, local=TRUE, reps) {
     }
 
     results_data<-missRanger(data=as.data.frame(newData), num.trees=100)
-    rownames(results_data)<-rownames(data)
-    colnames(results_data)<-colnames(data)
+    rownames(results_data)<-rownames(data)[-c(ncol(data))]
+    colnames(results_data)<-colnames(data)[-c(ncol(data))]
 
 
   }
@@ -355,8 +361,8 @@ impute <- function(data, method, local=TRUE, reps) {
     #index<- which(methods=="GSimp_Real")
     data_imp[data_imp==0.001]<-0
     results_data<- data_imp
-    rownames(results_data)<-rownames(data)
-    colnames(results_data)<-colnames(data)
+    rownames(results_data)<-rownames(data)[-c(ncol(data))]
+    colnames(results_data)<-colnames(data)[-c(ncol(data))]
 
 
 
@@ -382,8 +388,8 @@ impute <- function(data, method, local=TRUE, reps) {
 
     results_data<-QRILC_Prime(dataSet.mvs = data)
     results_data[results_data<=0.001]<-0
-    rownames(results_data)<-rownames(data)
-    colnames(results_data)<-colnames(data)
+    rownames(results_data)<-rownames(data)[-c(ncol(data))]
+    colnames(results_data)<-colnames(data)[-c(ncol(data))]
 
 
   }
@@ -409,8 +415,8 @@ impute <- function(data, method, local=TRUE, reps) {
 
 
     results_data<-completeObs(pc)
-    rownames(results_data)<-rownames(data)
-    colnames(results_data)<-colnames(data)
+    rownames(results_data)<-rownames(data)[-c(ncol(data))]
+    colnames(results_data)<-colnames(data)[-c(ncol(data))]
 
 
   }
