@@ -547,7 +547,7 @@ impute <- function(data, method, local=TRUE, reps) {
 
           newData[((reps*i)-(reps-1)):(reps*i),]<-tempData[,1:(ncol(tempData)-1)]
         }
-      }
+      }}
       rownames(newData)<-rownames(data)
       colnames(newData)<-colnames(data)[1:(ncol(data)-1)]
 
