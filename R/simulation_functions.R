@@ -210,7 +210,9 @@ simulate_missingness <- function(data, mcar=0, mar=0, mnar=0, mnar.type="left", 
 #' @export
 
 simulateEngine<- function (data, outcome=NULL, simIter, simMissIter, missMax, missMin, missInc, missRatios, methodsImp,
-                           methodsEval, simulate_Data=T, trip_groups){
+                           methodsEval, simulate_Data=T, reps){
+
+  rep_groups <- c(rep(1:(nrow(data)/reps), times=1, each=reps))
   startTime<-Sys.time()
   resultList<- list()
   simList<-list()
@@ -255,7 +257,7 @@ simulateEngine<- function (data, outcome=NULL, simIter, simMissIter, missMax, mi
           counter<-counter+1
           print(paste("Missing matrix", m, "of", missLevel, "percent with ratios", mcar, mar, mnar, sep=" "))
 
-          imputeResults<-imputeMulti(methods=methodsImp, data=missData, trip_groups=trip_groups)
+          imputeResults<-imputeMulti(methods=methodsImp, data=missData, reps=reps)
           errors<-simEval(origData=simData, missData=missData, methods=methodsEval, outcome=outcome, imputationResults = imputeResults)
           print("evaluted errors, added to list")
           missingDataList[[m]]<-errors

@@ -566,10 +566,10 @@ pre_processing_GS_wrapper <- function(data) {
 #' @return a list containing the dataframes of the imputed data
 #' @export
 
-imputeMulti<- function(methods, data, trip_groups=NULL){
+imputeMulti<- function(methods, data, reps=NULL){
   results<-list()
   for (i in 1:length(methods)){
-    results[[i]]<-impute(data, methods = methods[i], trip_groups = trip_groups)
+    results[[i]]<-impute(data, methods = methods[i], reps = reps)
     print(paste("imputed using", methods[i], sep=" "))
     names(results)[i]<-methods[i]
 
