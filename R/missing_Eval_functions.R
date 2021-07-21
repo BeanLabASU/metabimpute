@@ -176,6 +176,8 @@ missingProportions<- function(varStats){
 
 CullenFrey<-function(data){
 
+  require(e1071)
+
   a<-lapply(data, function(x) sum(is.na(x)))
   skew_list<-list()
   kurt_list<-list()
