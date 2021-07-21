@@ -36,7 +36,6 @@ impute <- function(data, method, local=TRUE, reps) {
 
     #imputed_data <- missForest::missForest(xmis = data,maxiter = 10,verbose = FALSE, parallelize = 'no')$ximp
     imputed_data<-missRanger(data=as.data.frame(data), num.trees=100)
-    index <- which(methods == "RF")
     results_data <- imputed_data
 
 
@@ -48,9 +47,7 @@ impute <- function(data, method, local=TRUE, reps) {
 
     ## Get the estimated complete observations
     imputed_data <- completeObs(pc)
-
-    index <- which(methods == "BPCA")
-    results_data[,index] <- imputed_data[,index]
+    results_data <- imputed_data
 
   }
 
@@ -59,9 +56,7 @@ impute <- function(data, method, local=TRUE, reps) {
 
     qrilc<- QRILC_Prime(dataSet.mvs = data)
     imputed_data<-qrilc
-
-    index <- which(methods=="QRILC")
-    results_data[,index]<- imputed_data[,index]
+    results_data<- imputed_data
   }
 
   if (method=='GSimp_Log'){
