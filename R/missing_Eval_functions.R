@@ -241,8 +241,7 @@ CullenFrey<-function(data){
   y<-kurtmax-(es2^4+2*es2^3+3*es2^2-3)
   lines(s2,y,lty=3)
 
-  points(x=CF_DF_T)
-
+  points(CF_DF)
 
   obs.pch<-16
   obs.col<-"darkblue"
