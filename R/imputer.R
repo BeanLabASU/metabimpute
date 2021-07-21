@@ -298,7 +298,8 @@ impute <- function(data, method, local=TRUE, reps) {
     }
 
     results_data<-missRanger(data=as.data.frame(newData), num.trees=100)
-
+    rownames(results_data)<-rownames(data)
+    colnames(results_data)<-colnames(data)
 
 
   }
@@ -354,6 +355,8 @@ impute <- function(data, method, local=TRUE, reps) {
     #index<- which(methods=="GSimp_Real")
     data_imp[data_imp==0.001]<-0
     results_data<- data_imp
+    rownames(results_data)<-rownames(data)
+    colnames(results_data)<-colnames(data)
 
 
 
@@ -379,7 +382,8 @@ impute <- function(data, method, local=TRUE, reps) {
 
     results_data<-QRILC_Prime(dataSet.mvs = data)
     results_data[results_data<=0.001]<-0
-
+    rownames(results_data)<-rownames(data)
+    colnames(results_data)<-colnames(data)
 
 
   }
@@ -405,7 +409,8 @@ impute <- function(data, method, local=TRUE, reps) {
 
 
     results_data<-completeObs(pc)
-
+    rownames(results_data)<-rownames(data)
+    colnames(results_data)<-colnames(data)
 
 
   }
@@ -421,10 +426,15 @@ impute <- function(data, method, local=TRUE, reps) {
       for (i in 1:length(unique(data$rep_groups))){
         tempData<-data[data[,ncol(data)]==i,]
         for (j in 1:(ncol(data)-1)){
-          min<- min(tempData[,j],na.rm = TRUE)
-          tempData[is.na(tempData[,j]),j]<- min
+          if(sum(is.na(tempData[,j]))==reps){
+            tempdata[,j]<-0
+          }else{
+           min<- min(tempData[,j],na.rm = TRUE)
+            tempData[is.na(tempData[,j]),j]<- min
 
-          newData[((reps*i)-(reps-1)):(reps*i),]<-tempData[,1:(ncol(tempData)-1)]
+            newData[((reps*i)-(reps-1)):(reps*i),]<-tempData[,1:(ncol(tempData)-1)]
+          }
+
         }
       }
       rownames(newData)<-rownames(data)
@@ -455,11 +465,14 @@ impute <- function(data, method, local=TRUE, reps) {
       for (i in 1:length(unique(data$rep_groups))){
         tempData<-data[data[,ncol(data)]==i,]
         for (j in 1:(ncol(data)-1)){
+          if(sum(is.na(tempData[,j]))==reps){
+            tempdata[,j]<-0
+          }else{
           halfmin<- min(tempData[,j],na.rm = TRUE)/2
           tempData[is.na(tempData[,j]),j]<- halfmin
 
           newData[((reps*i)-(reps-1)):(reps*i),]<-tempData[,1:(ncol(tempData)-1)]
-        }
+        }}
       }
       rownames(newData)<-rownames(data)
       colnames(newData)<-colnames(data)[1:(ncol(data)-1)]
@@ -489,11 +502,14 @@ impute <- function(data, method, local=TRUE, reps) {
       for (i in 1:length(unique(data$rep_groups))){
         tempData<-data[data[,ncol(data)]==i,]
         for (j in 1:(ncol(data)-1)){
+          if(sum(is.na(tempData[,j]))==reps){
+            tempdata[,j]<-0
+          }else{
           mean<- mean(tempData[,j],na.rm = TRUE)
           tempData[is.na(tempData[,j]),j]<- mean
 
           newData[((reps*i)-(reps-1)):(reps*i),]<-tempData[,1:(ncol(tempData)-1)]
-        }
+        }}
       }
       rownames(newData)<-rownames(data)
       colnames(newData)<-colnames(data)[1:(ncol(data)-1)]
@@ -523,11 +539,14 @@ impute <- function(data, method, local=TRUE, reps) {
       for (i in 1:length(unique(data$rep_groups))){
         tempData<-data[data[,ncol(data)]==i,]
         for (j in 1:(ncol(data)-1)){
+          if(sum(is.na(tempData[,j]))==reps){
+            tempdata[,j]<-0
+          }else{
           median<- median(tempData[,j],na.rm = TRUE)
           tempData[is.na(tempData[,j]),j]<- median
 
           newData[((reps*i)-(reps-1)):(reps*i),]<-tempData[,1:(ncol(tempData)-1)]
-        }
+        }}
       }
       rownames(newData)<-rownames(data)
       colnames(newData)<-colnames(data)[1:(ncol(data)-1)]
