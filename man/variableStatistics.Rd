@@ -18,7 +18,8 @@ variableStatistics(
 \item{gof_method}{the method to compute goodness of fit with left-censored data 'kolmogorov' (default), 'cucconi'}
 }
 \value{
-result A list containing a matrix of: percent missingness, quartile cutoffs, mean, missingness type, variance, distribution; also a matrix containing missing proportions
+result A list containing [[1]] a matrix of: percent missingness, quartile cutoffs, mean, missingness type, variance, distribution for each variable;
+[[2]] a matrix containing missingness percents by missingness type and [[3]] the overall missingness percentage
 }
 \description{
 A function that does various statistics on missingness per variables

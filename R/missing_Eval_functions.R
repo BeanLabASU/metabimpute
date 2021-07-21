@@ -28,7 +28,8 @@ binaryMatrix<- function(data){
 #' @param data A data frame (rows as samples, columns as variables)
 #' @param gof_method the method to compute goodness of fit with left-censored data 'kolmogorov' (default), 'cucconi'
 #' @param correlation_method the method to compute correlations 'pearson' (default), 'spearman', 'kendall'
-#' @return result A list containing a matrix of: percent missingness, quartile cutoffs, mean, missingness type, variance, distribution; also a matrix containing missing proportions
+#' @return result A list containing [[1]] a matrix of: percent missingness, quartile cutoffs, mean, missingness type, variance, distribution for each variable;
+#' [[2]] a matrix containing missingness percents by missingness type and [[3]] the overall missingness percentage
 #' @export
 
 variableStatistics<- function (data, correlation_method='pearson', gof_method='kolmogorov'){
