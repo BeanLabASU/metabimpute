@@ -42,7 +42,7 @@ variableStatistics<- function (data, correlation_method='pearson', gof_method='k
   out<-list()
 
   result<-data.frame(row.names=c("Missing Number", "Missing %:", "Min:", "Mean:", "Max:", "Variance:", "25th Percentile:",
-                                 "50th Percentile:", "75th Percentile:", "Missingness Type:", "Distribution (by GAMLSS)"))
+                                 "50th Percentile:", "75th Percentile:", "Missingness Type:", "Distribution (by GAMLSS)", 'Distribution Description'))
 
 
   missingNum<-0
@@ -80,9 +80,9 @@ variableStatistics<- function (data, correlation_method='pearson', gof_method='k
 
 
 
-  #fit_matrix<- lapply(data, function(x) fitDist(x, type="realplus")[[1]])
+  fit_matrix<- lapply(data, function(x) fitDist(x, type="realplus")[[1]])
 
-  #result[11:12,]<-data.frame(fit_matrix, stringsAsFactors = FALSE)
+  result[11:12,]<-data.frame(fit_matrix, stringsAsFactors = FALSE)
   result[10,]<-listMiss
 
 
