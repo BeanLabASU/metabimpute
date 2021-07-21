@@ -26,9 +26,9 @@ impute <- function(data, methods, local=TRUE, reps) {
   require(imputeLCMD)
   require(magrittr)
   require(matrixStats)
-  setwd("C:/Users/TRF/Documents/R/MetabImpute/R")
-  source('MVI_global.R')
-  source('GSimp.R')
+  require(MetabImpute)
+  #source('MetabImpute/R/MVI_global.R')
+  #source('MetabImpute/R/GSimp.R')
 
   if (length(methods) != 1 & length(methods) != ncol(data)) {
     stop("Methods needs to be either one value or of the same length as number of columns in data.")

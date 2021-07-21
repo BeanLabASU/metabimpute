@@ -4,10 +4,10 @@ require(magrittr)
 require(foreach)
 require(doParallel)
 require(MASS)
-setwd("C:/Users/TRF/Documents/R/MetabImpute/R")
-## Source ##
-source('MVI_global.R')
-source('Prediction_funcs.R')
+require(MetabImpute)
+#source('MetabImpute/R/MVI_global.R')
+#source('MetabImpute/R/Prediction_funcs.R')
+## Source #
 
 ## Draw n samples from a truncated normal distribution N(mu, std^2|[lo, hi]) ##
 rnorm_trunc <- function (n, mu, std, lo=-Inf, hi=Inf) {
