@@ -475,47 +475,79 @@ impute <- function(data, methods, local=TRUE, reps) {
     }
 
   }
-  if ("mean" %in% methods || "MEAN" %in% methods){
+  if (method=='mean' | method=='MEAN'){
     imputed_data <- data
-    foreach (data_column=which(methods == "mean")) %do% {
+
+    if(local==T){
+      rep_groups <- c(rep(1:(nrow(data)/reps), times=1, each=reps))
+      data<- cbind(data,rep_groups)
+
+      newData <-data.frame(matrix(nrow=nrow(data),ncol=ncol(data)-1))
+      for (i in 1:length(unique(data$rep_groups))){
+        tempData<-data[data[,ncol(data)]==i,]
+        for (j in 1:(ncol(data)-1)){
+          mean<- mean(tempData[,j],na.rm = TRUE)
+          tempData[is.na(tempData[,j]),j]<- mean
+
+          newData[((reps*i)-(reps-1)):(reps*i),]<-tempData[,1:(ncol(tempData)-1)]
+        }
+      }
+      rownames(newData)<-rownames(data)
+      colnames(newData)<-colnames(data)[1:(ncol(data)-1)]
+
+      results_data<newData
+
+
+    }else{
+      foreach (data_column=which(methods == "mean")) %do% {
       method <- methods[data_column]
       impu_value <- round(mean(data[,data_column], na.rm=TRUE),digits = 2)
       results_data[is.na(imputed_data[,data_column]), data_column] <- impu_value
     }
 
+    }
   }
 
   if ("median" %in% methods || "MEDIAN" %in% methods){
     imputed_data <- data
+
+    if(local==T){
+      rep_groups <- c(rep(1:(nrow(data)/reps), times=1, each=reps))
+      data<- cbind(data,rep_groups)
+
+      newData <-data.frame(matrix(nrow=nrow(data),ncol=ncol(data)-1))
+      for (i in 1:length(unique(data$rep_groups))){
+        tempData<-data[data[,ncol(data)]==i,]
+        for (j in 1:(ncol(data)-1)){
+          median<- median(tempData[,j],na.rm = TRUE)
+          tempData[is.na(tempData[,j]),j]<- median
+
+          newData[((reps*i)-(reps-1)):(reps*i),]<-tempData[,1:(ncol(tempData)-1)]
+        }
+      }
+      rownames(newData)<-rownames(data)
+      colnames(newData)<-colnames(data)[1:(ncol(data)-1)]
+
+      results_data<newData
+
+
+    }else{
     foreach (data_column=which(methods == "median")) %do% {
       method <- methods[data_column]
       impu_value <- round(median(data[,data_column], na.rm=TRUE),digits = 2)
       results_data[is.na(imputed_data[,data_column]), data_column] <- impu_value
     }
 
-  }
+  }}
 
-  if ("zero" %in% methods || "ZERO" %in% methods){
+  if (method=='zero' |method=='ZERO'){
     imputed_data <- data
+
     foreach (data_column=which(methods == "zero")) %do% {
       method <- methods[data_column]
       impu_value <- 0
       results_data[is.na(imputed_data[,data_column]), data_column] <- impu_value
     }
-
-  }
-  if ("EX" %in% methods){
-
-
-    index <- which(methods == "EX")
-    results_data[,index] <-  data[,index]
-  }
-
-  if ("NONE" %in% methods){
-
-
-    index <- which(methods == "NONE")
-    results_data[,index] <-  data[,index]
 
   }
 
