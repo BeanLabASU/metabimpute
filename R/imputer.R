@@ -7,7 +7,7 @@
 #' @param reps the number of replicate groups
 #' simulated data that doesn't require log preprocessing.
 #'
-#' @return the matrix containing the imputed data
+#' @return results_data the matrix containing the imputed data
 #' @export
 #'
 #' @examples
@@ -451,16 +451,39 @@ impute <- function(data, methods, local=TRUE, reps) {
 
 
 
-  if ("halfmin" %in% methods) {
+  if (methods=="halfmin") {
     imputed_data <- data
+
+    if(local==T){
+      rep_groups <- c(rep(1:(nrow(data)/reps), times=1, each=reps))
+      data<- cbind(data,rep_groups)
+
+      newData <-data.frame(matrix(nrow=nrow(data),ncol=ncol(data)-1))
+      for (i in 1:length(unique(data$rep_groups))){
+        tempData<-data[data[,ncol(data)]==i,]
+        for (j in 1:(ncol(data)-1)){
+          halfmin<- min(tempData[,j],na.rm = TRUE)/2
+          tempData[is.na(tempData[,j]),j]<- halfmin
+
+          newData[((reps*i)-(reps-1)):(reps*i),]<-tempData[,1:(ncol(tempData)-1)]
+        }
+      }
+      rownames(newData)<-rownames(data)
+      colnames(newData)<-colnames(data)[1:(ncol(data)-1)]
+
+      results_data<newData
+
+
+    }else{
     foreach (data_column=which(methods == "halfmin")) %do% {
       method <- methods[data_column]
       impu_value <- (min(data[,data_column], na.rm=TRUE)/2)
       results_data[is.na(imputed_data[,data_column]), data_column] <- impu_value
     }
 
+    }
+    return(results_data)
   }
-
   if ("mean" %in% methods || "MEAN" %in% methods){
     imputed_data <- data
     foreach (data_column=which(methods == "mean")) %do% {
@@ -506,7 +529,7 @@ impute <- function(data, methods, local=TRUE, reps) {
   }
 
 
-  results_data
+  return(results_data)
 }
 
 
