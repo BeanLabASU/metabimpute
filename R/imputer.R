@@ -427,7 +427,7 @@ impute <- function(data, method, local=TRUE, reps) {
         tempData<-data[data[,ncol(data)]==i,]
         for (j in 1:(ncol(data)-1)){
           if(sum(is.na(tempData[,j]))==reps){
-            tempdata[,j]<-0
+            tempData[,j]<-0
           }else{
            min<- min(tempData[,j],na.rm = TRUE)
             tempData[is.na(tempData[,j]),j]<- min
@@ -466,7 +466,7 @@ impute <- function(data, method, local=TRUE, reps) {
         tempData<-data[data[,ncol(data)]==i,]
         for (j in 1:(ncol(data)-1)){
           if(sum(is.na(tempData[,j]))==reps){
-            tempdata[,j]<-0
+            tempData[,j]<-0
           }else{
           halfmin<- min(tempData[,j],na.rm = TRUE)/2
           tempData[is.na(tempData[,j]),j]<- halfmin
@@ -503,7 +503,7 @@ impute <- function(data, method, local=TRUE, reps) {
         tempData<-data[data[,ncol(data)]==i,]
         for (j in 1:(ncol(data)-1)){
           if(sum(is.na(tempData[,j]))==reps){
-            tempdata[,j]<-0
+            tempData[,j]<-0
           }else{
           mean<- mean(tempData[,j],na.rm = TRUE)
           tempData[is.na(tempData[,j]),j]<- mean
@@ -540,13 +540,13 @@ impute <- function(data, method, local=TRUE, reps) {
         tempData<-data[data[,ncol(data)]==i,]
         for (j in 1:(ncol(data)-1)){
           if(sum(is.na(tempData[,j]))==reps){
-            tempdata[,j]<-0
+            tempData[,j]<-0
           }else{
           median<- median(tempData[,j],na.rm = TRUE)
           tempData[is.na(tempData[,j]),j]<- median
 
           newData[((reps*i)-(reps-1)):(reps*i),]<-tempData[,1:(ncol(tempData)-1)]
-        }}
+        }
       }
       rownames(newData)<-rownames(data)
       colnames(newData)<-colnames(data)[1:(ncol(data)-1)]
