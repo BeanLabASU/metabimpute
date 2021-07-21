@@ -2,7 +2,7 @@
 #' This functions contains different imputation methods and imputes the data with all
 #' the different imputation methods
 #' @param data data matrix with simulated data
-#' @param methods vector containing the method names. Note GSimp_Real is for real non-neg data. GSimp_Sim is for already
+#' @param method the imputation method Note GSimp_Real is for real non-neg data. GSimp_Sim is for already
 #' @param local a boolean to determine if local rep_impute method is to be used, default to true.
 #' @param reps the number of replicate groups
 #' simulated data that doesn't require log preprocessing.
@@ -38,17 +38,8 @@ impute <- function(data, methods, local=TRUE, reps) {
     methods <- rep(methods, times=ncol(data))
   }
 
-  if ("RF_P" %in% methods) {
-    cl<-makeCluster(4)
-    registerDoParallel(cl)
-    imputed_data <- missForest::missForest(xmis = data,maxiter = 10,verbose = FALSE, parallelize = 'variables')$ximp
-    index <- which(methods == "RF")
-    results_data <- imputed_data
-    stopCluster(cl=cl)
 
-  }
-
-  if ("RF" %in% methods) {
+  if (method == 'RF') {
 
     #imputed_data <- missForest::missForest(xmis = data,maxiter = 10,verbose = FALSE, parallelize = 'no')$ximp
     imputed_data<-missRanger(data=as.data.frame(data), num.trees=100)
@@ -58,7 +49,7 @@ impute <- function(data, methods, local=TRUE, reps) {
 
   }
 
-  if ("PPCA" %in% methods) {
+  if (method == "PPCA") {
     # Do cross validation with ppca for component 2:10
     #esti <- kEstimate(Matrix= data, method = "ppca", evalPcs = 2:10, nruncv = 1 , em="nrmsep")
     esti<-kEstimateFast(Matrix=data, method="ppca", evalPcs=1:10, em='q2')
@@ -73,7 +64,7 @@ impute <- function(data, methods, local=TRUE, reps) {
   }
 
 
-  if ("BPCA" %in% methods){
+  if (method == "BPCA"){
     # bayesian principal component analysis
     pc <-pcaMethods:: pca(object = data, method="bpca", nPcs=10)
 
@@ -85,7 +76,7 @@ impute <- function(data, methods, local=TRUE, reps) {
 
   }
 
-  if ("QRILC" %in% methods){
+  if (method=='QRILC'){
 
 
     qrilc<- QRILC_Prime(dataSet.mvs = data)
@@ -95,7 +86,7 @@ impute <- function(data, methods, local=TRUE, reps) {
     results_data[,index]<- imputed_data[,index]
   }
 
-  if ("GSimp_Log" %in% methods){
+  if (method=='GSimp_Log'){
 
     data_raw <- as.matrix(data)
     ## log transformation ##
@@ -135,7 +126,7 @@ impute <- function(data, methods, local=TRUE, reps) {
 
   }
 
-  if ("GSimp_NoLog" %in% methods){
+  if (method=='GSimp_NoLog'){
     data_raw <- data
 
     data_raw_qrilc <- as.data.frame(QRILC_Prime(data_raw))
@@ -149,7 +140,7 @@ impute <- function(data, methods, local=TRUE, reps) {
     results_data<-imputed_data
   }
 
-  if("Rep_Imp_HM" %in% methods){
+  if(method=='Rep_Imp_HM'){
     rep_groups <- c(rep(1:(nrow(data)/reps), times=1, each=reps))
     data[data==0]<-NA
     data<- cbind(data,rep_groups)
@@ -182,7 +173,7 @@ impute <- function(data, methods, local=TRUE, reps) {
 
   }
 
-  if("Rep_Imp_mean" %in% methods){
+  if(method=="Rep_Imp_mean"){
     rep_groups <- c(rep(1:(nrow(data)/reps), times=1, each=reps))
     data[data==0]<-NA
     data<- cbind(data,rep_groups)
@@ -214,7 +205,7 @@ impute <- function(data, methods, local=TRUE, reps) {
 
   }
 
-  if("Rep_Imp_median" %in% methods){
+  if(method=="Rep_Imp_median"){
     rep_groups <- c(rep(1:(nrow(data)/reps), times=1, each=reps))
     data[data==0]<-NA
     data<- cbind(data,rep_groups)
@@ -247,7 +238,7 @@ impute <- function(data, methods, local=TRUE, reps) {
 
   }
 
-  if("Rep_Imp_min" %in% methods){
+  if(method=="Rep_Imp_min"){
     rep_groups <- c(rep(1:(nrow(data)/reps), times=1, each=reps))
     data[data==0]<-NA
     data<- cbind(data,rep_groups)
@@ -282,7 +273,7 @@ impute <- function(data, methods, local=TRUE, reps) {
 
   }
 
-  if("Rep_Zero" %in% methods){
+  if(method=="Rep_Zero"){
     rep_groups <- c(rep(1:(nrow(data)/reps), times=1, each=reps))
     data[data==0]<-NA
     data<- cbind(data,rep_groups)
@@ -306,7 +297,7 @@ impute <- function(data, methods, local=TRUE, reps) {
     results_data<newData
   }
 
-  if("Rep_Imp_RF" %in% methods){
+  if(methods=="Rep_Imp_RF"){
     rep_groups <- c(rep(1:(nrow(data)/reps), times=1, each=reps))
     data[data==0]<-NA
     data<- cbind(data,rep_groups)
@@ -329,7 +320,7 @@ impute <- function(data, methods, local=TRUE, reps) {
 
   }
 
-  if("Rep_Imp_GSimp" %in% methods){
+  if(method=="Rep_Imp_GSimp"){
     rep_groups <- c(rep(1:(nrow(data)/reps), times=1, each=reps))
     data[data==0]<-NA
     data<- cbind(data,rep_groups)
@@ -386,7 +377,7 @@ impute <- function(data, methods, local=TRUE, reps) {
   }
 
 
-  if("Rep_Imp_QRILC" %in% methods){
+  if(method=="Rep_Imp_QRILC"){
     rep_groups <- c(rep(1:(nrow(data)/reps), times=1, each=reps))
     data[data==0]<-NA
     data<- cbind(data,rep_groups)
@@ -410,7 +401,7 @@ impute <- function(data, methods, local=TRUE, reps) {
 
   }
 
-  if("Rep_Imp_BPCA" %in% methods){
+  if(method=="Rep_Imp_BPCA"){
     rep_groups <- c(rep(1:(nrow(data)/reps), times=1, each=reps))
     data[data==0]<-NA
     data<- cbind(data,rep_groups)
@@ -437,7 +428,7 @@ impute <- function(data, methods, local=TRUE, reps) {
   }
 
 
-  if ("min" %in% methods || "MIN" %in% methods) {
+  if (method=='min' | method=='MIN') {
     imputed_data <- data
     foreach (data_column=which(methods == "min")) %do% {
       method <- methods[data_column]
@@ -451,7 +442,7 @@ impute <- function(data, methods, local=TRUE, reps) {
 
 
 
-  if (methods=="halfmin") {
+  if (method=="halfmin") {
     imputed_data <- data
 
     if(local==T){
@@ -482,7 +473,7 @@ impute <- function(data, methods, local=TRUE, reps) {
     }
 
     }
-    return(results_data)
+
   }
   if ("mean" %in% methods || "MEAN" %in% methods){
     imputed_data <- data
