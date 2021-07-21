@@ -26,7 +26,7 @@ impute <- function(data, methods, local=TRUE, reps) {
   require(imputeLCMD)
   require(magrittr)
   require(matrixStats)
-  require(MetabImpute)
+
   #source('MetabImpute/R/MVI_global.R')
   #source('MetabImpute/R/GSimp.R')
 

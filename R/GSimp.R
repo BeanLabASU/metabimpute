@@ -4,7 +4,7 @@ require(magrittr)
 require(foreach)
 require(doParallel)
 require(MASS)
-require(MetabImpute)
+
 #source('MetabImpute/R/MVI_global.R')
 #source('MetabImpute/R/Prediction_funcs.R')
 ## Source #
