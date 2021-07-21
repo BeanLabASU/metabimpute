@@ -563,6 +563,7 @@ pre_processing_GS_wrapper <- function(data) {
 #'
 #' @param methods a list of imputation methods
 #' @param data the dataset with missing values contained
+#' @param reps number of replicates, if applicable
 #' @return a list containing the dataframes of the imputed data
 #' @export
 

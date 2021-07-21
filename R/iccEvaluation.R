@@ -3,7 +3,7 @@
 #' a function to compare ICC of original data to imputed data. MAKE SURE THAT THE LAST IN METHODS VECTOR is zero imputation
 #'
 #' @param origData
-#' @param groups this is a factor containing group levels
+#' @param reps number of replicates
 #' @param imputed this is a list of imputed dataframes
 #' @param methods this is a vector of all the imputation methods used
 
@@ -11,7 +11,7 @@
 #' @return a list of various measures
 #' @export
 
-iccEval<-function(origData, groups, imputed, methods){
+iccEval<-function(origData, reps, imputed, methods){
 
   require(Rmisc)
   require(irr)
@@ -20,6 +20,7 @@ iccEval<-function(origData, groups, imputed, methods){
 
   results<-list()
 
+  groups<-as.factor(c(rep(1:(nrow(data)/reps), times=1, each=reps)))
 
   vector<-vector(mode="numeric")
   iccDF<-data.frame(vector)
