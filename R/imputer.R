@@ -59,8 +59,8 @@ impute <- function(data, method, local=TRUE, reps) {
   if (method=='QRILC'){
 
 
-    qrilc<- QRILC_Prime(dataSet.mvs = data)
-    imputed_data<-qrilc
+    qrilc<- impute.QRILC(dataSet.mvs = data)
+    imputed_data<-qrilc[[1]]
     rownames(imputed_data)<-rownames(data)
     colnames(imputed_data)<-colnames(data)
     results_data<- imputed_data
@@ -73,7 +73,7 @@ impute <- function(data, method, local=TRUE, reps) {
     data_raw_log <- data_raw %>% log()
     data_raw_log[data_raw_log==-Inf]<-0
     ## Initialization ##
-    data_raw_log_qrilc <- QRILC_Prime(data_raw_log)
+    data_raw_log_qrilc <- impute.QRILC(data_raw_log)[[1]]
     ## Centralization and scaling ##
     data_raw_log_qrilc_sc <- scale_recover(data_raw_log_qrilc, method = 'scale')
     ## Data after centralization and scaling ##
@@ -320,7 +320,7 @@ impute <- function(data, method, local=TRUE, reps) {
     data_raw_log <- data_raw %>% log()
     data_raw_log[data_raw_log==-Inf]<-0
     ## Initialization ##
-    data_raw_log_qrilc <- QRILC_Prime(data_raw_log)
+    data_raw_log_qrilc <- impute.QRILC(data_raw_log)[[1]]
     ## Centralization and scaling ##
     data_raw_log_qrilc_sc <- scale_recover(data_raw_log_qrilc, method = 'scale')
     ## Data after centralization and scaling ##
@@ -375,7 +375,7 @@ impute <- function(data, method, local=TRUE, reps) {
       }
     }
 
-    results_data<-QRILC_Prime(dataSet.mvs = data)
+    results_data<-impute.QRILC(dataSet.mvs = data)[[1]]
     results_data[results_data<=0.001]<-0
     rownames(results_data)<-rownames
     colnames(results_data)<-colnames
@@ -591,7 +591,7 @@ pre_processing_GS_wrapper <- function(data) {
   data_raw_log=do.call(data.frame,lapply(data_raw_log, function(x) replace(x, is.infinite(x),NA)))
 
   ## Initialization ##
-  data_raw_log_qrilc <- QRILC_Prime(data_raw_log)
+  data_raw_log_qrilc <- impute.QRILC(data_raw_log)[[1]]
   ## Centralization and scaling ##
   data_raw_log_qrilc_sc <- scale_recover(as.data.frame(data_raw_log_qrilc), method = 'scale')
   ## Data after centralization and scaling ##
@@ -642,46 +642,4 @@ imputeMulti<- function(methods, data, reps=NULL){
 
 }
 
-#'QRILC_Prime
-#'
-#'Modified from source code written by Cosmin Lazar at https://www.rdocumentation.org/packages/imputeLCMD/versions/2.0/topics/impute.QRILC
-#' ammended to handle cases in which there are columns without any missing values. Accessed from git
-#'
-#'@param dataSet.mvs the data to be imputed which can include non-missing rows which will be left untouched
-#'@param tune.sigma
-#'@return imputed data frame
-#'@export
 
-QRILC_Prime<-function (dataSet.mvs, tune.sigma = 1)
-{
-  nFeatures = dim(dataSet.mvs)[1]
-  nSamples = dim(dataSet.mvs)[2]
-  dataSet.imputed = dataSet.mvs
-  QR.obj = list()
-  for (i in 1:nSamples) {
-    curr.sample = dataSet.mvs[, i]
-    pNAs = length(which(is.na(curr.sample)))/length(curr.sample)
-
-    if(pNAs!=0){
-      upper.q = 0.95
-      q.normal = qnorm(seq(pNAs, upper.q, (upper.q - pNAs)/(upper.q *
-                                                            10000)), mean = 0, sd = 1)
-      q.curr.sample = quantile(curr.sample, probs = seq(0,
-                                                      upper.q, 1e-04), na.rm = T)
-      q.curr.sample[q.curr.sample==-Inf]<-0
-      temp.QR = lm(q.curr.sample ~ q.normal)
-      QR.obj[[i]] = temp.QR
-      mean.CDD = temp.QR$coefficients[1]
-      sd.CDD = abs(as.numeric(temp.QR$coefficients[2]))
-      data.to.imp = rtmvnorm(n = nFeatures, mean = mean.CDD,
-                           sigma = sd.CDD * tune.sigma, upper = qnorm(pNAs,
-                                                                      mean = mean.CDD, sd = sd.CDD), algorithm = c("gibbs"))
-      curr.sample.imputed = curr.sample
-      curr.sample.imputed[which(is.na(curr.sample))] = data.to.imp[which(is.na(curr.sample))]
-      dataSet.imputed[, i] = curr.sample.imputed
-    }
-
-  }
-  results = dataSet.imputed
-  return(results)
-}
