@@ -1,13 +1,4 @@
-require(missForest)
-require(imputeLCMD)
-require(magrittr)
-require(foreach)
-require(doParallel)
-require(MASS)
 
-#source('MetabImpute/R/MVI_global.R')
-#source('MetabImpute/R/Prediction_funcs.R')
-## Source #
 
 ## Draw n samples from a truncated normal distribution N(mu, std^2|[lo, hi]) ##
 #'@export
@@ -136,10 +127,10 @@ multi_impute <- function(data_miss, iters_each=100, iters_all=20, initial='qrilc
   miss_count <- data_miss %>% apply(., 2, function(x) sum(is.na(x)))
   ## Index of missing variables, sorted (increasing) by the number of missings
 
-  print("hi")
+
   #miss_col_idx <- order(miss_count, decreasing = T) %>% extract(1:sum(miss_count!=0)) %>% rev()
   miss_col_idx <- order(miss_count, decreasing = T)[1:sum(miss_count!=0)] %>% rev()
-  print("hi")
+
 
   if (!all(gibbs$col %in% miss_col_idx)) {stop('improper argument: gibbs')}
   gibbs_sort <- gibbs

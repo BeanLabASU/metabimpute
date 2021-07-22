@@ -46,7 +46,7 @@ impute <- function(data, method, local=TRUE, reps) {
 
   if (method == "BPCA"){
     # bayesian principal component analysis
-    pc <-pcaMethods:: pca(object = data, method="bpca", nPcs=10)
+    pc <-pcaMethods:: pca(object = data, method="bpca", nPcs=3)
 
     ## Get the estimated complete observations
     imputed_data <- completeObs(pc)
@@ -267,8 +267,7 @@ impute <- function(data, method, local=TRUE, reps) {
     colnames(newData)<-colnames(data)[1:(ncol(data)-1)]
 
     results_data<-newData
-    rownames(results_data)<-rownames(data)[-c(ncol(data))]
-    colnames(results_data)<-colnames(data)[-c(ncol(data))]
+
   }
 
   if(method=="RRF"){
@@ -417,7 +416,7 @@ impute <- function(data, method, local=TRUE, reps) {
       }
     }
 
-    pc <-pcaMethods:: pca(object = newData, method="bpca", nPcs=10)
+    pc <-pcaMethods:: pca(object = newData, method="bpca", nPcs=3)
 
 
     results_data<-completeObs(pc)
@@ -586,6 +585,7 @@ impute <- function(data, method, local=TRUE, reps) {
 
   }
 
+  results_data[results_data<0]<-0.0
 
   return(results_data)
 }
@@ -642,13 +642,14 @@ pre_processing_GS_wrapper <- function(data) {
 #' @param methods a list of imputation methods
 #' @param data the dataset with missing values contained
 #' @param reps number of replicates, if applicable
+#' @param local boolean whether to use a local imputation method or global, only applicable to non-replicate methods that do single value imputation
 #' @return a list containing the dataframes of the imputed data
 #' @export
 
-imputeMulti<- function(methods, data, reps=NULL){
+imputeMulti<- function(methods, data, local=T, reps=NULL){
   results<-list()
   for (i in 1:length(methods)){
-    results[[i]]<-impute(data, method = methods[i], reps = reps)
+    results[[i]]<-impute(data, method = methods[i], local=local,reps = reps)
     print(paste("imputed using", methods[i], sep=" "))
     names(results)[i]<-methods[i]
 
