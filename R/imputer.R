@@ -46,7 +46,7 @@ impute <- function(data, method, local=TRUE, reps) {
 
   if (method == "BPCA"){
     # bayesian principal component analysis
-    pc <-pcaMethods:: pca(object = data, method="bpca", nPcs=3)
+    pc <-pcaMethods:: pca(object = data, method="bpca", nPcs=min(c(10,ncol(data)/2)))
 
     ## Get the estimated complete observations
     imputed_data <- completeObs(pc)
@@ -416,7 +416,7 @@ impute <- function(data, method, local=TRUE, reps) {
       }
     }
 
-    pc <-pcaMethods:: pca(object = newData, method="bpca", nPcs=3)
+    pc <-pcaMethods:: pca(object = newData, method="bpca", nPcs=min(c(10,ncol(data)/2)))
 
 
     results_data<-completeObs(pc)
