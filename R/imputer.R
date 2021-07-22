@@ -654,7 +654,6 @@ imputeMulti<- function(methods, data, reps=NULL){
 
 QRILC_Prime<-function (dataSet.mvs, tune.sigma = 1)
 {
-  require(gmm)
   nFeatures = dim(dataSet.mvs)[1]
   nSamples = dim(dataSet.mvs)[2]
   dataSet.imputed = dataSet.mvs
