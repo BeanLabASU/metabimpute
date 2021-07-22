@@ -25,6 +25,13 @@ impute <- function(data, method, local=TRUE, reps) {
   require(imputeLCMD)
   require(magrittr)
   require(matrixStats)
+  require(foreach)
+  require(MASS)
+  require(abind)
+  require(randomForest)
+  require(glmnet)
+  require(rpart)
+  require(FNN)
 
 
   imputed_data <- matrix(NA,nrow = nrow(data),ncol = ncol(data))
@@ -582,6 +589,8 @@ impute <- function(data, method, local=TRUE, reps) {
       imputed_data[is.na(data[,i]),i]<-0
 
     }
+
+    results_data<-imputed_data
 
   }
 
