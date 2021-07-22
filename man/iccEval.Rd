@@ -25,5 +25,5 @@ a list of various measures
 \description{
 a function to compare ICC of original data to imputed data. MAKE SURE THAT THE LAST IN METHODS VECTOR is zero imputation
 
-a function to compare ICC of original data to imputed data. MAKE SURE THAT THE LAST IN METHODS VECTOR is zero imputation
+a function to compare ICC of original data to imputed data. MAKE SURE THAT THE LAST IN METHODS VECTOR is the comparison imputation method (zero usually)
 }

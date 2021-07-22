@@ -1,6 +1,6 @@
 #' iccEval
 #'
-#' a function to compare ICC of original data to imputed data. MAKE SURE THAT THE LAST IN METHODS VECTOR is zero imputation
+#' a function to compare ICC of original data to imputed data. MAKE SURE THAT THE LAST IN METHODS VECTOR is the comparison imputation method (zero usually)
 #'
 #' @param origData
 #' @param reps number of replicates
@@ -102,12 +102,11 @@ iccEval<-function(origData, reps, imputed, methods){
 #'
 #'@param iccMeasure matrix of a measure of ICC change from ICC Eval
 #'@param methods list of methods of imputation with baseline comparison matrix last
-#'@param measure a string indicating which measurement type (difference, absolute value or sum of squeares) to be used for title of plot
 #'
 #'@return a ggplot of measure of icc change with CIs
 #'@export
 
-ICC_Change_Plot<-function(iccMeasure, methods, measure){
+ICC_Change_Plot<-function(iccMeasure, methods){
   dfPlot<-data.frame(x =methods[-c(length(methods))],
                       F =iccMeasure[2,],
                       L =iccMeasure[3,],
@@ -129,12 +128,12 @@ ICC_Change_Plot<-function(iccMeasure, methods, measure){
 #'@return result list of the scatter plot data and the ggplot
 #'@export
 
-ICC_Scatter_Plot<-function(rawData, reps, iccImputed, iccComparison, plotTitle){
+ICC_Scatter_Plot<-function(data, reps, iccImputed, iccComparison, plotTitle){
   result<-list()
-  rep_groups <- c(rep(1:nrows(data)/reps, times=1, each=reps))
+  rep_groups <- c(rep(1:nrow(data)/reps, times=1, each=reps))
 
   #filtering data where ICC cannot be calculated due to missingness
-  rawData_Filtered<-ICCformatting(rawData, groups = rep_groups)
+  rawData_Filtered<-ICCformatting(data, reps=reps)
 
   #proportion of replicate groups permuted to zero per feature
   Proportion<-rawData_Filtered[1,]
@@ -216,7 +215,7 @@ ICC_Counts<-function(iccMatrix){
 #'@param iccImputed imputed ICCs vector
 #'@param iccComparison vector of ICCs of the comparison method (eg zero imputation)
 #'
-#'@return
+#'@return iccChange a matrix displaying the icc changes from iccImputed to iccComparison
 #'@export
 
 ICC_Change_Counts<-function (iccImputed, iccComparison){
@@ -227,83 +226,84 @@ ICC_Change_Counts<-function (iccImputed, iccComparison){
                               "Poor to Excellent", "Poor to Good", "Poor to Moderate", "Poor to Inconclusive",
                               "Inconclusive to Excellent", "Inconclusive to Good", "Inconclusive to Moderate", "Inconclusive to Poor")
 
-  iccChange<-matrix(nrow=20,ncol=1)
+  iccChange<-matrix(data=0.0,nrow=20,ncol=1)
+  rownames(iccChange)<-names
 
 
-    for (i in 1:nrow(iccImputed)){
+    for (i in 1:length(iccImputed)){
       #Ex
       if (iccComparison[i]>.9){
         if (iccImputed[i]>.9){
 
         }else if(iccImputed[i]>.75){
-          iccChange[1,j]<-iccChange[1,j]+1
+          iccChange[1,1]<-iccChange[1,1]+1
         }else if(iccImputed[i]>.5){
-          iccChange[2,j]<-iccChange[2,j]+1
+          iccChange[2,1]<-iccChange[2,1]+1
         }else if (iccImputed[i]>=0){
-          iccChange[3,j]<-iccChange[3,j]+1
+          iccChange[3,1]<-iccChange[3,1]+1
         }else{
-          iccChange[4,j]<-iccChange[4,j]+1
+          iccChange[4,1]<-iccChange[4,1]+1
         }
       }
       #Good
       else if(iccComparison[i]>.75){
         if(iccImputed[i]>0.9){
-          iccChange[5,j]<-iccChange[5,j]+1
+          iccChange[5,1]<-iccChange[5,1]+1
         }else if(iccImputed[i]>.75){
 
         }else if(iccImputed[i]>.5){
-          iccChange[6,j]<-iccChange[6,j]+1
+          iccChange[6,1]<-iccChange[6,1]+1
         }else if(iccImputed[i]>=0){
-          iccChange[7,j]<-iccChange[7,j]+1
+          iccChange[7,1]<-iccChange[7,1]+1
         }else{
-          iccChange[8,j]<-iccChange[8,j]+1
+          iccChange[8,1]<-iccChange[8,1]+1
         }
       }
       #Mod
       else if (iccComparison[i]>.5){
         if(iccImputed[i]>.9){
-          iccChange[9,j]<-iccChange[9,j]+1
+          iccChange[9,1]<-iccChange[9,1]+1
         }else if (iccImputed[i]>.75){
-          iccChange[10,j]<-iccChange[10,j]+1
+          iccChange[10,1]<-iccChange[10,1]+1
         }else if (iccImputed[i]>.5){
 
         }else if (iccImputed[i]>=0){
-          iccChange[11,j]<-iccChange[11,j]+1
+          iccChange[11,1]<-iccChange[11,1]+1
         }else{
-          iccChange[12,j]<-iccChange[12,j]+1
+          iccChange[12,1]<-iccChange[12,1]+1
         }
       }
       #Poor
       else if (iccComparison[i]>=0){
         if(iccImputed[i]>.9){
-          iccChange[13,j]<-iccChange[13,j]+1
+          iccChange[13,1]<-iccChange[13,1]+1
         }else if(iccImputed[i]>.75){
-          iccChange[14,j]<-iccChange[14,j]+1
+          iccChange[14,1]<-iccChange[14,1]+1
         }else if (iccImputed[i]>.5){
-          iccChange[15,j]<-iccChange[15,j]+1
+          iccChange[15,1]<-iccChange[15,1]+1
         }else if(iccImputed[i]>=0){
 
         }else{
-          iccChange[16,j]<-iccChange[16,j]+1
+          iccChange[16,1]<-iccChange[16,1]+1
         }
       }
       # Inconclusive
       else if(iccComparison[i]<0){
         if(iccImputed[i]>.9){
-          iccChange[17,j]<-iccChange[17,j]+1
+          iccChange[17,1]<-iccChange[17,1]+1
         }else if(iccImputed[i]>.75){
-          iccChange[18,j]<-iccChange[18,j]+1
+          iccChange[18,1]<-iccChange[18,1]+1
         }else if(iccImputed[i]>.5){
-          iccChange[19,j]<-iccChange[19,j]+1
+          iccChange[19,1]<-iccChange[19,1]+1
         }else if(iccImputed[i]>=0){
-          iccChange[20,j]<-iccChange[20,j]+1
+          iccChange[20,1]<-iccChange[20,1]+1
         }
       }
 
 
   }
 
-
+  return(iccChange)
 
 }
 

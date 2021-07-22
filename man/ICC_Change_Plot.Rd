@@ -4,14 +4,12 @@
 \alias{ICC_Change_Plot}
 \title{ICC Change Plot}
 \usage{
-ICC_Change_Plot(iccMeasure, methods, measure)
+ICC_Change_Plot(iccMeasure, methods)
 }
 \arguments{
 \item{iccMeasure}{matrix of a measure of ICC change from ICC Eval}
 
 \item{methods}{list of methods of imputation with baseline comparison matrix last}
-
-\item{measure}{a string indicating which measurement type (difference, absolute value or sum of squeares) to be used for title of plot}
 }
 \value{
 a ggplot of measure of icc change with CIs

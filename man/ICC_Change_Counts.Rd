@@ -12,7 +12,7 @@ ICC_Change_Counts(iccImputed, iccComparison)
 \item{iccComparison}{vector of ICCs of the comparison method (eg zero imputation)}
 }
 \value{
-
+iccChange a matrix displaying the icc changes from iccImputed to iccComparison
 }
 \description{
 Counts of ICC changes from one class of Koo et al. to another after imputation

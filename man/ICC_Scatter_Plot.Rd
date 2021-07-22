@@ -4,11 +4,9 @@
 \alias{ICC_Scatter_Plot}
 \title{ICC Scatter Plot}
 \usage{
-ICC_Scatter_Plot(rawData, reps, iccImputed, iccComparison, plotTitle)
+ICC_Scatter_Plot(data, reps, iccImputed, iccComparison, plotTitle)
 }
 \arguments{
-\item{rawData}{original dataset}
-
 \item{reps}{number of replicate groups}
 
 \item{iccImputed}{ICCs of the data after an imputation method}
@@ -16,6 +14,8 @@ ICC_Scatter_Plot(rawData, reps, iccImputed, iccComparison, plotTitle)
 \item{iccComparison}{ICCs of the comparison data (eg zero imputed matrix)}
 
 \item{plotTitle}{string}
+
+\item{rawData}{original dataset}
 }
 \value{
 result list of the scatter plot data and the ggplot
