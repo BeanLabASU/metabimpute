@@ -314,30 +314,40 @@ impute <- function(data, method, local=TRUE, reps) {
         newData[((reps*i)-(reps-1)):(reps*i),]<-tempData[,1:(ncol(tempData)-1)]
       }
     }
+    miss<-as.vector(lapply(newData, function(x) sd(x,na.rm=T)==0)==T)
 
-    data_raw <- as.matrix(newData)
+    data_raw <- as.data.frame(newData)
     ## log transformation ##
     data_raw_log <- data_raw %>% log()
-    data_raw_log[data_raw_log==-Inf]<-0
+
+    #added to deal with fully present columns
+    data_raw_log[data_raw_log==-Inf]<- -1
+    data_keep<-data_raw_log[,miss==F]
+    data_rm<-newData[,miss==T]
     ## Initialization ##
-    data_raw_log_qrilc <- impute.QRILC(data_raw_log)[[1]]
+
+    data_raw_log_qrilc<- impute.QRILC(as.matrix(data_keep))[[1]]
+
     ## Centralization and scaling ##
-    data_raw_log_qrilc_sc <- scale_recover(data_raw_log_qrilc, method = 'scale')
+    data_raw_log_qrilc_sc <- scale_recover(as.matrix(data_raw_log_qrilc), method = 'scale')
     ## Data after centralization and scaling ##
     data_raw_log_qrilc_sc_df <- data_raw_log_qrilc_sc[[1]]
+
+
     ## Parameters for centralization and scaling ##
     ## For scaling recovery ##
     data_raw_log_qrilc_sc_df_param <- data_raw_log_qrilc_sc[[2]]
     ## NA position ##
-    NA_pos <- which(is.na(data_raw), arr.ind = T)
+    NA_pos <- which(is.na(data_keep), arr.ind = T)
     ## bala bala bala ##
-    data_raw_log_sc <- data_raw_log_qrilc_sc_df
+    data_raw_log_sc <- as.matrix(data_raw_log_qrilc_sc_df)
     data_raw_log_sc[NA_pos] <- NA
     ## GSimp imputation with initialized data and missing data ##
     result <- data_raw_log_sc %>% GS_impute(., iters_each=30, iters_all=5,
                                             initial = as.data.frame(data_raw_log_qrilc_sc_df),
                                             lo=-Inf, hi= 'min', n_cores=4,
                                             imp_model='glmnet_pred')
+
     data_imp_log_sc <- result$data_imp
     ## Data recovery ##
     data_imp <- data_imp_log_sc %>%
@@ -345,10 +355,16 @@ impute <- function(data, method, local=TRUE, reps) {
                     param_df = data_raw_log_qrilc_sc_df_param) %>%
       extract2(1) %>% exp()
 
+    data_imp[newData[,miss==F]==0]<-0
+
+    newData[,miss==F]<-data_imp
+    newData[,miss==T]<-data_rm
+
+
     #imputed_data<-pre_processing_GS_wrapper(data)
     #index<- which(methods=="GSimp_Real")
-    data_imp[data_imp==0.001]<-0
-    results_data<- data_imp
+
+    results_data<- newData
     rownames(results_data)<-rownames
     colnames(results_data)<-colnames
 
@@ -375,7 +391,7 @@ impute <- function(data, method, local=TRUE, reps) {
       }
     }
 
-    results_data<-impute.QRILC(dataSet.mvs = data)[[1]]
+    results_data<-impute.QRILC(dataSet.mvs = newData)[[1]]
     results_data[results_data<=0.001]<-0
     rownames(results_data)<-rownames
     colnames(results_data)<-colnames
@@ -591,7 +607,7 @@ pre_processing_GS_wrapper <- function(data) {
   data_raw_log=do.call(data.frame,lapply(data_raw_log, function(x) replace(x, is.infinite(x),NA)))
 
   ## Initialization ##
-  data_raw_log_qrilc <- impute.QRILC(data_raw_log)[[1]]
+  data_raw_log_qrilc <-imputeLCMD::impute.QRILC(data_raw_log)[[1]]
   ## Centralization and scaling ##
   data_raw_log_qrilc_sc <- scale_recover(as.data.frame(data_raw_log_qrilc), method = 'scale')
   ## Data after centralization and scaling ##
