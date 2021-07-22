@@ -2,9 +2,9 @@
 #' This functions contains different imputation methods and imputes the data with all
 #' the different imputation methods
 #' @param data data matrix with simulated data
-#' @param method the imputation method Note GSimp_Real is for real non-neg data.
-#' method=c('RF', "BPCA", 'QRILC', 'GSimp_Log', 'Rep_Imp_HM',"Rep_Imp_mean", "Rep_Imp_median", "Rep_Imp_min","Rep_Zero", "Rep_Imp_RF",
-#' "Rep_Imp_GSimp", "Rep_Imp_QRILC","Rep_Imp_BPCA",'min',"halfmin", 'mean', 'median', 'zero')
+#' @param method the imputation method Note within replicate methods are preceded by 'R', eg 'RMIN'
+#' method=c('RF', 'BPCA', 'QRILC', 'GSIMP', 'RHM','RMEAN', 'RMEDIAN', 'RMIN','RZERO', 'RRF',
+#' 'RGSIMP', 'RQRILC','RBPCA','min','halfmin', 'mean', 'median', 'zero')
 #' @param local a boolean to determine if local rep_impute method is to be used, default to true.
 #' @param reps the number of replicate groups
 #' simulated data that doesn't require log preprocessing.
@@ -66,7 +66,7 @@ impute <- function(data, method, local=TRUE, reps) {
     results_data<- imputed_data
   }
 
-  if (method=='GSimp_Log'){
+  if (method=='GSIMP'){
 
     data_raw <- as.matrix(data)
     ## log transformation ##
@@ -108,22 +108,7 @@ impute <- function(data, method, local=TRUE, reps) {
 
   }
 
-  if (method=='GSimp_NoLog'){
-    data_raw <- data
-
-    data_raw_qrilc <- as.data.frame(QRILC_Prime(data_raw))
-
-    result <- data_raw%>% GS_impute(., iters_each=50, iters_all=10,
-                                    initial = data_raw_qrilc,
-                                    lo=-Inf, hi= 'min', n_cores=4,
-                                    imp_model='glmnet_pred')
-    imputed_data <- result$data_imp
-    rownames(imputed_data)<-rownames(data)
-    colnames(imputed_data)<-colnames(data)
-    results_data<-imputed_data
-  }
-
-  if(method=='Rep_Imp_HM'){
+  if(method=='RHM'){
     rep_groups <- c(rep(1:(nrow(data)/reps), times=1, each=reps))
     data[data==0]<-NA
     data<- cbind(data,rep_groups)
@@ -157,7 +142,7 @@ impute <- function(data, method, local=TRUE, reps) {
 
   }
 
-  if(method=="Rep_Imp_mean"){
+  if(method=="RMEAN"){
     rep_groups <- c(rep(1:(nrow(data)/reps), times=1, each=reps))
     data[data==0]<-NA
     data<- cbind(data,rep_groups)
@@ -190,7 +175,7 @@ impute <- function(data, method, local=TRUE, reps) {
 
   }
 
-  if(method=="Rep_Imp_median"){
+  if(method=="RMEDIAN"){
     rep_groups <- c(rep(1:(nrow(data)/reps), times=1, each=reps))
     data[data==0]<-NA
     data<- cbind(data,rep_groups)
@@ -224,7 +209,7 @@ impute <- function(data, method, local=TRUE, reps) {
 
   }
 
-  if(method=="Rep_Imp_min"){
+  if(method=="RMIN"){
     rep_groups <- c(rep(1:(nrow(data)/reps), times=1, each=reps))
     data[data==0]<-NA
     data<- cbind(data,rep_groups)
@@ -260,7 +245,7 @@ impute <- function(data, method, local=TRUE, reps) {
 
   }
 
-  if(method=="Rep_Zero"){
+  if(method=="RZERO"){
     rep_groups <- c(rep(1:(nrow(data)/reps), times=1, each=reps))
     data[data==0]<-NA
     data<- cbind(data,rep_groups)
@@ -286,12 +271,14 @@ impute <- function(data, method, local=TRUE, reps) {
     colnames(results_data)<-colnames(data)[-c(ncol(data))]
   }
 
-  if(method=="Rep_Imp_RF"){
+  if(method=="RRF"){
     rep_groups <- c(rep(1:(nrow(data)/reps), times=1, each=reps))
-    data[data==0]<-NA
+    rownames<-rownames(data)
+    colnames<-colnames(data)
+    newData <-data.frame(matrix(nrow=nrow(data),ncol=ncol(data)))
     data<- cbind(data,rep_groups)
 
-    newData <-data.frame(matrix(nrow=nrow(data),ncol=ncol(data)-1))
+
 
     for (i in 1:length(unique(rep_groups))){
       tempData<-data[data[,ncol(data)]==i,]
@@ -304,15 +291,16 @@ impute <- function(data, method, local=TRUE, reps) {
     }
 
     results_data<-missRanger(data=as.data.frame(newData), num.trees=100)
-    rownames(results_data)<-rownames(data)[1:(ncol(data)-1)]
-    colnames(results_data)<-colnames(data)[1:(ncol(data)-1)]
+    rownames(results_data)<-rownames
+    colnames(results_data)<-colnames
 
 
   }
 
-  if(method=="Rep_Imp_GSimp"){
+  if(method=="RGSIMP"){
     rep_groups <- c(rep(1:(nrow(data)/reps), times=1, each=reps))
-    data[data==0]<-NA
+    rownames<-rownames(data)
+    colnames<-colnames(data)
     data<- cbind(data,rep_groups)
 
     newData <-data.frame(matrix(nrow=nrow(data),ncol=ncol(data)-1))
@@ -361,17 +349,18 @@ impute <- function(data, method, local=TRUE, reps) {
     #index<- which(methods=="GSimp_Real")
     data_imp[data_imp==0.001]<-0
     results_data<- data_imp
-    rownames(results_data)<-rownames(data)[-c(ncol(data))]
-    colnames(results_data)<-colnames(data)[-c(ncol(data))]
+    rownames(results_data)<-rownames
+    colnames(results_data)<-colnames
 
 
 
   }
 
 
-  if(method=="Rep_Imp_QRILC"){
+  if(method=="RQRILC"){
     rep_groups <- c(rep(1:(nrow(data)/reps), times=1, each=reps))
-    data[data==0]<-NA
+    rownames<-rownames(data)
+    colnames<-colnames(data)
     data<- cbind(data,rep_groups)
 
     newData <- data.frame(matrix(nrow=nrow(data),ncol=ncol(data)-1))
@@ -388,15 +377,16 @@ impute <- function(data, method, local=TRUE, reps) {
 
     results_data<-QRILC_Prime(dataSet.mvs = data)
     results_data[results_data<=0.001]<-0
-    rownames(results_data)<-rownames(data)[-c(ncol(data))]
-    colnames(results_data)<-colnames(data)[-c(ncol(data))]
+    rownames(results_data)<-rownames
+    colnames(results_data)<-colnames
 
 
   }
 
-  if(method=="Rep_Imp_BPCA"){
+  if(method=='RBPCA'){
     rep_groups <- c(rep(1:(nrow(data)/reps), times=1, each=reps))
-    data[data==0]<-NA
+    rownames<-rownames(data)
+    colnames<-colnames(data)
     data<- cbind(data,rep_groups)
 
     newData <- data.frame(matrix(nrow=nrow(data),ncol=ncol(data)-1))
@@ -415,8 +405,8 @@ impute <- function(data, method, local=TRUE, reps) {
 
 
     results_data<-completeObs(pc)
-    rownames(results_data)<-rownames(data)[-c(ncol(data))]
-    colnames(results_data)<-colnames(data)[-c(ncol(data))]
+    rownames(results_data)<-rownames
+    colnames(results_data)<-colnames
 
 
   }

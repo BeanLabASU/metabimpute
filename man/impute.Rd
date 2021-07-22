@@ -11,9 +11,9 @@ impute(data, method, local = TRUE, reps)
 \arguments{
 \item{data}{data matrix with simulated data}
 
-\item{method}{the imputation method Note GSimp_Real is for real non-neg data.
-method=c('RF', "BPCA", 'QRILC', 'GSimp_Log', 'Rep_Imp_HM',"Rep_Imp_mean", "Rep_Imp_median", "Rep_Imp_min","Rep_Zero", "Rep_Imp_RF",
-"Rep_Imp_GSimp", "Rep_Imp_QRILC","Rep_Imp_BPCA",'min',"halfmin", 'mean', 'median', 'zero')}
+\item{method}{the imputation method Note within replicate methods are preceded by 'R', eg 'RMIN'
+method=c('RF', 'BPCA', 'QRILC', 'GSIMP', 'RHM','RMEAN', 'RMEDIAN', 'RMIN','RZERO', 'RRF',
+'RGSIMP', 'RQRILC','RBPCA','min','halfmin', 'mean', 'median', 'zero')}
 
 \item{local}{a boolean to determine if local rep_impute method is to be used, default to true.}
 
