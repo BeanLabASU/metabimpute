@@ -607,7 +607,7 @@ impute <- function(data, method, local=TRUE, reps) {
 
   }
 
-  results_data[results_data<0]<- -1
+  #results_data[results_data<0]<- -1
 
   return(results_data)
 }
