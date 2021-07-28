@@ -394,7 +394,7 @@ impute <- function(data, method, local=TRUE, reps) {
       tempData<-data[data[,ncol(data)]==i,]
       for (j in 1:(ncol(data)-1)){
         if (sum(is.na(tempData[,j]))>=(0.5*reps)){
-          tempData[,j]<-0.0
+          tempData[,j]<-0.01
         }
         newData[((reps*i)-(reps-1)):(reps*i),]<-tempData[,1:(ncol(tempData)-1)]
       }
@@ -596,7 +596,7 @@ impute <- function(data, method, local=TRUE, reps) {
 
   }
 
-  results_data[results_data<0]<-0.0
+  results_data[results_data<0]<- -1
 
   return(results_data)
 }
