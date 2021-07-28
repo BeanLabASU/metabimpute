@@ -35,7 +35,7 @@ impute <- function(data, method, local=TRUE, reps) {
   require(glmnet)
   require(rpart)
   require(FNN)
-
+  require(gmm)
 
   imputed_data <- matrix(NA,nrow = nrow(data),ncol = ncol(data))
   results_data <- data
@@ -720,6 +720,7 @@ cbind_abind <- function(a, b) {
 #'copied from WandeRum/GSimp
 glmnet_pred <- function(x, y, alpha=.5, lambda=.01) {
   require(glmnet)
+  require(gmm)
   x_mat <- as.matrix(x)
   model <- glmnet(x=x_mat, y=y, alpha=alpha, lambda=lambda)
   y_hat <- predict(model, newx=x_mat)[, 1]
