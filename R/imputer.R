@@ -394,13 +394,24 @@ impute <- function(data, method, local=TRUE, reps) {
       tempData<-data[data[,ncol(data)]==i,]
       for (j in 1:(ncol(data)-1)){
         if (sum(is.na(tempData[,j]))>=(0.5*reps)){
-          tempData[,j]<-0.01
+          tempData[,j]<-0.0
         }
         newData[((reps*i)-(reps-1)):(reps*i),]<-tempData[,1:(ncol(tempData)-1)]
       }
     }
 
-    results_data<-impute.QRILC(dataSet.mvs = newData)[[1]]
+
+    miss<-as.vector(lapply(newData, function(x) sd(x,na.rm=T)==0)==T)
+
+    data_raw <- as.data.frame(newData)
+
+    data_keep<-data_raw[,miss==F]
+    data_rm<-newData[,miss==T]
+
+    results_data<-newData
+
+    results_data[,miss==F]<-impute.QRILC(dataSet.mvs = data_keep)[[1]]
+    results_data[,miss==T]<-data_rm
     rownames(results_data)<-rownames
     colnames(results_data)<-colnames
 
