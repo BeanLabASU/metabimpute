@@ -106,13 +106,13 @@ iccEval<-function(origData, reps, imputed, methods){
 #'@return a ggplot of measure of icc change with CIs
 #'@export
 
-ICC_Change_Plot<-function(iccMeasure, methods){
+ICC_Change_Plot<-function(iccMeasure, methods, title){
   dfPlot<-data.frame(x =methods[-c(length(methods))],
                       F =iccMeasure[2,],
                       L =iccMeasure[3,],
                       U =iccMeasure[1,])
 
-  plot<- ggplot(dfPlot, aes(x = x, y = F)) + geom_point(size = 4) + geom_errorbar(aes(ymax = U, ymin = L))+ ggtitle(measure)
+  plot<- ggplot(dfPlot, aes(x = x, y = F)) + geom_point(size = 4) + geom_errorbar(aes(ymax = U, ymin = L))+ ggtitle(title)
   return(plot)
 
 }
