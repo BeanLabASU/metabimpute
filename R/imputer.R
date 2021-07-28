@@ -394,14 +394,13 @@ impute <- function(data, method, local=TRUE, reps) {
       tempData<-data[data[,ncol(data)]==i,]
       for (j in 1:(ncol(data)-1)){
         if (sum(is.na(tempData[,j]))>=(0.5*reps)){
-          tempData[,j]<-0.001
+          tempData[,j]<-0.0
         }
         newData[((reps*i)-(reps-1)):(reps*i),]<-tempData[,1:(ncol(tempData)-1)]
       }
     }
 
     results_data<-impute.QRILC(dataSet.mvs = newData)[[1]]
-    results_data[results_data<=0.001]<-0
     rownames(results_data)<-rownames
     colnames(results_data)<-colnames
 
