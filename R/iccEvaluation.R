@@ -52,7 +52,7 @@ iccEval<-function(origData, reps, imputed, methods){
   #replacing NaNs with 0, since the reason for NaNs will be variances of 0, or imputation of the whole vector to 0
   iccDF[is.na(iccDF)]<-0
 
-
+  #iccDF[nrow(iccDF)+1, ]<-colnames(iccDF)
   results[[1]]<-iccDF
   names(results)[1]<-"ICC dataframe"
 
@@ -112,7 +112,8 @@ ICC_Change_Plot<-function(iccMeasure, methods, title){
                       L =iccMeasure[3,],
                       U =iccMeasure[1,])
 
-  plot<- ggplot(dfPlot, aes(x = x, y = F)) + geom_point(size = 4) + geom_errorbar(aes(ymax = U, ymin = L))+ ggtitle(title)
+  plot<- ggplot(dfPlot, aes(x = x, y = F)) + geom_point(size = 4) + geom_errorbar(aes(ymax = U, ymin = L))+ ggtitle(title)+ylab("ICC Change")+
+    xlab("")
   return(plot)
 
 }
@@ -226,6 +227,12 @@ ICC_Change_Counts<-function (iccImputed, iccComparison){
                               "Poor to Excellent", "Poor to Good", "Poor to Moderate", "Poor to Inconclusive",
                               "Inconclusive to Excellent", "Inconclusive to Good", "Inconclusive to Moderate", "Inconclusive to Poor")
 
+  #imputed_Name<-iccImputed[nrow(iccImputed),1]
+  #comparison_Name<-iccComparison[nrow(iccComparison),1]
+
+  #iccImputed<-iccImputed[1:nrow(iccImputed),]
+  #iccComparison<-iccComparison[1:nrow(iccComparison),]
+
   iccChange<-matrix(data=0.0,nrow=20,ncol=1)
   rownames(iccChange)<-names
 
@@ -302,7 +309,7 @@ ICC_Change_Counts<-function (iccImputed, iccComparison){
 
 
   }
-
+  #colnames(iccChange)<-c(paste(imputed_Name, comparison_Name, sep=" vs. "))
   return(iccChange)
 
 }
