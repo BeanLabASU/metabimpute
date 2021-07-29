@@ -20,7 +20,7 @@ iccEval<-function(origData, reps, imputed, methods){
 
   results<-list()
 
-  groups<-as.factor(c(rep(1:(nrow(data)/reps), times=1, each=reps)))
+  groups<-as.factor(c(rep(1:(nrow(origData)/reps), times=1, each=reps)))
 
   vector<-vector(mode="numeric")
   iccDF<-data.frame(vector)
