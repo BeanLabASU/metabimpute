@@ -2,13 +2,25 @@ Package: MetabImpute
 Type: Package
 Title: Missingness Evaluation, Simulation and Imputation in Metabolomics
 Version: 0.1.0
-Author: Tarek Firzli <trfirzli@gmail.com>
+Author: Tarek Firzli <trfirzli@gmail.com>, Trenton Davis <tjdavi18@asu.edu>, Emily Higgins <ehiggins@asu.edu>
 Maintainer: Tarek Firzli <trfirzli@gmail.com>
 Description: A package to evaluate missing data, simulate data matrices and missingness, 
-    evaluate multiple imputation methods and return statistics on these and finally impute
-    based on the most appropriate methods.
-Depends: missCompare
-License: What license is it under? No fucking clue ***
+    evaluate multiple imputation methods and return statistics on these and finally methods to 
+    impute utilizing multiple standard imputation approaches. Novel imputation methodologies 
+    which utilize an imputation approach with data that uses biological or technical replication
+    are also included (as described in ***paper***). ICC evaluation methods are included specifically
+    included to suit researchers working with data with biological or technical replicates. Source code 
+    was written by the authors with code copied and modified from the following github packages: 
+    https://github.com/Tirgit/missCompare, 
+    https://github.com/WandeRum/GSimp (Wei, R., Wang, J., Jia, E., Chen, T., Ni, Y., & Jia, W. (2017). GSimp: 
+      A Gibbs sampler based left-censored missing value imputation approach for metabolomics studies. PLOS Computational Biology)
+    https://github.com/juuussi/impute-metabo Kokla, M., Virtanen, J., Kolehmainen, M. et al. Random forest-based imputation outperforms 
+      other methods for imputing LC-MS metabolomics data: a comparative study. BMC Bioinformatics 20, 492 (2019). 
+      https://doi.org/10.1186/s12859-019-3110-0
+Depends: abind, doParallel, e1071, FNN, foreach, gamlss, ggplot2, glmnet, gridExtra, ICC, impute, 
+  imputeLCMD, irr, ltm, magrittr, MASS, Matrix, matrixStats, missForest, missRanger, nonpar, pcaMethods,
+  PEMM, pls, randomForest, reshape2, Rmisc, rpart, stats, tidyr, vegan
+License: GNU General Public License v3
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.1.1

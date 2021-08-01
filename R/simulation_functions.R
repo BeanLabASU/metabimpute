@@ -43,7 +43,7 @@ simulate <- function(rownum, colnum, corMat) {
   require(stats)
 
   pd_corr_matrix <- nearPD(corMat, keepDiag = T, conv.tol = 1e-07, corr = T, maxit=1000, conv.norm.type = "F")
-  mu <- rep(5, colnum)
+  mu <- rep(2, colnum)
   stddev <- rep(1, colnum)
   covMat <- stddev %*% t(stddev) * pd_corr_matrix$mat
   simMat <- mvrnorm(n = rownum, mu = mu, Sigma = covMat, empirical = FALSE)  # Simulated values
@@ -77,13 +77,13 @@ simulate_missingness <- function(data, mcar=0, mar=0, mnar=0, mnar.type="left", 
   if ( ((mcar + mar + mnar) > 1) || ((mcar + mar + mnar) < 0)) {
     stop("Sum of mcar, mar and mnar should be between 0 and 1.")
   }
-
+  print(1)
   simulated_data <- data
   if (mcar > 0){
     mcar_distribution   = runif(nrow(data)*ncol(data), min=0, max=1)
     simulated_data = matrix(ifelse(mcar_distribution<mcar, NA, data), nrow=nrow(data), ncol=ncol(data))
   }
-
+  print(2)
   if (mnar > 0) {
     added_mnar <- 0
     initial_nas <- sum(colSums(is.na(simulated_data)))
@@ -132,7 +132,7 @@ simulate_missingness <- function(data, mcar=0, mar=0, mnar=0, mnar.type="left", 
       current_nas <- sum(colSums(is.na(simulated_data)))
     }
   }
-
+  print(3)
   if (mar > 0) {
     added_mar <- 0
     initial_nas <- sum(colSums(is.na(simulated_data)))

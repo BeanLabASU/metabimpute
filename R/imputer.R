@@ -38,7 +38,7 @@ impute <- function(data, method, local=TRUE, reps) {
 
 
   imputed_data <- matrix(NA,nrow = nrow(data),ncol = ncol(data))
-  results_data <- data
+  results_data <- as.data.frame(data)
 
 
 
@@ -454,7 +454,7 @@ impute <- function(data, method, local=TRUE, reps) {
       data<- cbind(data,rep_groups)
 
       newData <-data.frame(matrix(nrow=nrow(data),ncol=ncol(data)-1))
-      for (i in 1:length(unique(data$rep_groups))){
+      for (i in 1:length(unique(data[,ncol(data)]))){
         tempData<-data[data[,ncol(data)]==i,]
         for (j in 1:(ncol(data)-1)){
           if(sum(is.na(tempData[,j]))==reps){
@@ -606,7 +606,7 @@ impute <- function(data, method, local=TRUE, reps) {
     results_data<-imputed_data
 
   }
-
+  results_data<-data.frame(results_data)
   results_data[results_data<0]<- 0.0
 
   return(results_data)

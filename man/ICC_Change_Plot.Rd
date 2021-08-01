@@ -4,7 +4,7 @@
 \alias{ICC_Change_Plot}
 \title{ICC Change Plot}
 \usage{
-ICC_Change_Plot(iccMeasure, methods)
+ICC_Change_Plot(iccMeasure, methods, title)
 }
 \arguments{
 \item{iccMeasure}{matrix of a measure of ICC change from ICC Eval}
