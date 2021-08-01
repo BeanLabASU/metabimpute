@@ -192,7 +192,6 @@ simulate_missingness <- function(data, mcar=0, mar=0, mnar=0, mnar.type="left", 
 #' This function is going to be the main engine that actually runs the simulations and tracks the data and the
 #' error calculations at differing levels of missingness, ratios of missingness and iterations of the sim.
 #' @param data the original data set
-#' @param outcome the factor levels or group membership info, if applicable
 #' @param simIter this is the number of unique simulation matrices to be made from the covMat of the origData
 #' @param simMissIter this is the number of simulated missing data matrices to be created for a given missingness
 #' proportion
@@ -208,7 +207,7 @@ simulate_missingness <- function(data, mcar=0, mar=0, mnar=0, mnar.type="left", 
 #' proportion of missingness and total percent of missingness.
 #' @export
 
-simulateEngine<- function (data, outcome=NULL, simIter, simMissIter, missMax, missMin, missInc, missRatios, methodsImp,
+simulateEngine<- function (data, simIter, simMissIter, missMax, missMin, missInc, missRatios, methodsImp,
                            methodsEval, simulate_Data=T, reps){
 
   rep_groups <- c(rep(1:(nrow(data)/reps), times=1, each=reps))
@@ -257,7 +256,7 @@ simulateEngine<- function (data, outcome=NULL, simIter, simMissIter, missMax, mi
           print(paste("Missing matrix", m, "of", missLevel, "percent with ratios", mcar, mar, mnar, sep=" "))
 
           imputeResults<-imputeMulti(methods=methodsImp, data=missData, reps=reps)
-          errors<-simEval(origData=simData, missData=missData, methods=methodsEval, outcome=outcome, imputationResults = imputeResults)
+          errors<-simEval(origData=simData, missData=missData, methods=methodsEval, imputationResults = imputeResults, simulate_Data=simulate_Data)
           print("evaluted errors, added to list")
           missingDataList[[m]]<-errors
 

@@ -3,13 +3,12 @@
 #' this will be a function that utilizes all of the different error analysis tools into one nice function
 #' @param origData
 #' @param missData
-#' @param method string "NRMSE" "NRMSE SOR", "PCA Procrustes", "PLS Procrustes", "Pearson Corr"
-#' @param outcome if there are groups and we want to use PLS-DA which is a supervised algo
+#' @param method string "NRMSE" "NRMSE-SOR", "PCA-P"
 #' @param imputationResults is specifically a list of imputed dataframes from all the chosen methods, used in SOR
 #' @results a list of error measurements across imputations methods
 #' @export
 
-errorEvals<- function(origData, missData, method, outcome=NULL, imputationResults){
+errorEvals<- function(origData, missData, method, imputationResults, simulate_Data=T){
 
   require(vegan)
   require(foreach)
@@ -21,6 +20,10 @@ errorEvals<- function(origData, missData, method, outcome=NULL, imputationResult
   score<-vector(mode="numeric", length=length(imputationResults))
   for (i in seq_along(imputationResults)){
     names(score)[i]<-names(imputationResults)[i]
+  }
+
+  for (i in seq_along(imputationResults)){
+    imputationResults[[i]][is.na(imputationResults[[i]])]<-0.0
   }
 
   if (method=="NRMSE"){
@@ -53,17 +56,7 @@ errorEvals<- function(origData, missData, method, outcome=NULL, imputationResult
 
   if (method=="PCA-P"){
 
-    for (i in seq_along(imputationResults)){
-      print(origData)
-      print(imputationResults[[i]])
-      pca_Orig<-prcomp(origData, scale. = T, center = T)$x[,1:2]
-      score[i]<-procrustes(pca_Orig, prcomp(imputationResults[[i]], scale. =T, center=T)$x[,1:2], symmetric = T)$ss
-    }
-
-
-  }
-
-  if (method=="PCA-P_Alt"){
+    if(simulate_Data==T){
 
     for (i in seq_along(imputationResults)){
       print(origData)
@@ -71,34 +64,14 @@ errorEvals<- function(origData, missData, method, outcome=NULL, imputationResult
       pca_Orig<-prcomp(origData, scale. = F, center = F)$x[,1:2]
       score[i]<-procrustes(pca_Orig, prcomp(imputationResults[[i]], scale. =F, center=F)$x[,1:2], symmetric = T)$ss
     }
-
-
-  }
-
-  if (method=="PLS-P"){
-
-    for (i in seq_along(imputationResults)){
-
-      pls_Orig<-data.frame(opls(origData, outcome, predI = 2, permI = 0, fig.pdfC = F)@scoreMN)
-      score[i]<-procrustes(pls_Orig,
-                           data.frame(opls(imputationResults[[i]], outcome, predI = 2, permI = 0, fig.pdfC = F)@scoreMN),
-                           symmetric = T)$ss
+    }else{
+      for (i in seq_along(imputationResults)){
+      print(origData)
+      print(imputationResults[[i]])
+      pca_Orig<-prcomp(origData, scale. = T, center = T)$x[,1:2]
+      score[i]<-procrustes(pca_Orig, prcomp(imputationResults[[i]], scale. =T, center=T)$x[,1:2], symmetric = T)$ss
     }
-
-  }
-
-  if (method=="Pearson"){
-
-    for (i in seq_along(imputationResults)){
-      pVals_Orig <- sapply(as.data.frame(origData), function(x) t.test(x ~ outcome)$p.value)
-      pVals_Imp <- sapply(as.data.frame(imputeResults[[i]]), function(x) t.test(x ~ outcome)$p.value)
-
-      score[i]<-cor.test(log(pVals_Orig), log(pVals_Imp))$estimate
-
-      # this would be the spearman test, the original is pearson
-      #cor.test(Ttest_p_c1,Ttest_p_c2, method='spearman')$estimate
     }
-
 
   }
 
@@ -120,12 +93,12 @@ errorEvals<- function(origData, missData, method, outcome=NULL, imputationResult
 #' @return results a dataframe displaying NRMSE, PCA-Procustes, PLS Procrustes and Student's T test and Pearson Correl
 #' @export
 
-simEval<- function(origData, missData, impData, methods, outcome=NULL, imputationResults){
+simEval<- function(origData, missData, impData, methods, imputationResults, simulate_Data){
 
   results<-data.frame(row.names=names(imputationResults))
 
   for (i in seq_along(methods)){
-    results[,i]<-errorEvals(origData = origData, missData = missData, method = methods[i], outcome=outcome, imputationResults = imputationResults)
+    results[,i]<-errorEvals(origData = origData, missData = missData, method = methods[i], imputationResults = imputationResults, simulate_Data=simulate_Data)
     colnames(results)[i]<-methods[i]
 
 }
