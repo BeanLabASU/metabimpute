@@ -223,7 +223,7 @@ changes<-ICC_Change_Counts(iccImputed = icc$`ICC dataframe`$RHM,
 #Displaying the results
 changes
 ```
-```{r, echo=FALSE, warning=FALSE}
+```{r, echo=FALSE,message=FALSE, warning=FALSE}
 library(knitr)
 x<-read.csv(file='icc_change.csv')
 kable(x )
