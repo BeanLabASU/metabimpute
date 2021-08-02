@@ -17,11 +17,41 @@ Description: A package to evaluate missing data, simulate data matrices and miss
     https://github.com/juuussi/impute-metabo Kokla, M., Virtanen, J., Kolehmainen, M. et al. Random forest-based imputation outperforms 
       other methods for imputing LC-MS metabolomics data: a comparative study. BMC Bioinformatics 20, 492 (2019). 
       https://doi.org/10.1186/s12859-019-3110-0
-Depends: R (>3.0)
+Depends: R (>= 3.6.2)
 License: GNU General Public License v3
-Imports: abind, doParallel, e1071, FNN, foreach, gamlss, ggplot2, glmnet, gridExtra, ICC, impute, 
-  imputeLCMD, irr, ltm, magrittr, MASS, Matrix, matrixStats, missForest, missRanger, nonpar, pcaMethods,
-  PEMM, pls, randomForest, reshape2, Rmisc, rpart, stats, tidyr, vegan
+Imports: 
+  abind (>= 1.4-5), 
+  doParallel (>= 1.0.16), 
+  e1071 (>= 1.7-6), 
+  FNN (>= 1.1.3), 
+  foreach (>= 1.5.1), 
+  gamlss (>= 5.3-4), 
+  ggplot2 (>= 3.3.3), 
+  glmnet (>= 4.1-1), 
+  gmm (>= 1.6-6), 
+  gridExtra (>= 2.3), 
+  ICC (>= 2.3.0), 
+  impute (>= 1.60.0), 
+  imputeLCMD (>= 2.0), 
+  irr (>= 0.84.1), 
+  ltm (>= 1.1-1), 
+  magrittr (>= 2.0.1), 
+  MASS (>= 7.3-51.4), 
+  Matrix (>= 1.2-18), 
+  matrixStats (>= 0.58.0), 
+  missForest (>= 1.4), 
+  missRanger (>= 2.1.3), 
+  nonpar (>= 0.1-2), 
+  pcaMethods (>= 1.78.0),
+  PEMM (>= 1.0), 
+  pls (>= 2.7-3), 
+  randomForest (>= 4.6-14), 
+  reshape2 (>= 1.4.4), 
+  Rmisc (>= 1.5), 
+  rpart (>= 4.1-15), 
+  stats (>= 3.6.2), 
+  tidyr (>= 1.1.3), 
+  vegan (>= 2.5-7)
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.1.1

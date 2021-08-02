@@ -6,7 +6,6 @@
 \usage{
 simulateEngine(
   data,
-  outcome = NULL,
   simIter,
   simMissIter,
   missMax,
@@ -21,8 +20,6 @@ simulateEngine(
 }
 \arguments{
 \item{data}{the original data set}
-
-\item{outcome}{the factor levels or group membership info, if applicable}
 
 \item{simIter}{this is the number of unique simulation matrices to be made from the covMat of the origData}
 

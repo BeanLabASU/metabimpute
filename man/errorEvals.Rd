@@ -4,12 +4,10 @@
 \alias{errorEvals}
 \title{errorEvals}
 \usage{
-errorEvals(origData, missData, method, outcome = NULL, imputationResults)
+errorEvals(origData, missData, method, imputationResults, simulate_Data = T)
 }
 \arguments{
-\item{method}{string "NRMSE" "NRMSE SOR", "PCA Procrustes", "PLS Procrustes", "Pearson Corr"}
-
-\item{outcome}{if there are groups and we want to use PLS-DA which is a supervised algo}
+\item{method}{string "NRMSE" "NRMSE-SOR", "PCA-P"}
 
 \item{imputationResults}{is specifically a list of imputed dataframes from all the chosen methods, used in SOR}
 }

@@ -4,14 +4,7 @@
 \alias{simEval}
 \title{simEval}
 \usage{
-simEval(
-  origData,
-  missData,
-  impData,
-  methods,
-  outcome = NULL,
-  imputationResults
-)
+simEval(origData, missData, impData, methods, imputationResults, simulate_Data)
 }
 \arguments{
 \item{origData}{the dataset prior to simulating missingness}
@@ -22,9 +15,9 @@ simEval(
 
 \item{methods}{a list of evaluation methods to be utilized}
 
-\item{outcome}{is a grouping list for supervized learning to use PLS or pearson}
-
 \item{imputationResults}{}
+
+\item{outcome}{is a grouping list for supervized learning to use PLS or pearson}
 }
 \value{
 results a dataframe displaying NRMSE, PCA-Procustes, PLS Procrustes and Student's T test and Pearson Correl
