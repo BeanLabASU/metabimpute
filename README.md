@@ -1,12 +1,5 @@
-<<<<<<< HEAD
----
-title: "MetabImpute"
-output: rmarkdown::html_vignette
-vignette: >
-  %\VignetteIndexEntry{vignette}
-  %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}
----
+# MetabImpute
+
 
 ## Introduction
 
@@ -93,12 +86,15 @@ var_Stats[[1]][,1:2]
 #Showing missingness proportions 
 var_Stats[[2]]
 ```
-```{r, echo=FALSE, warning=FALSE}
-library(knitr)
-x<-read.csv(file='var_stats2.csv')
-kable(x )
 
-```
+| X    | Missingness.Type.By.Variable | Proportion.of.Overall.Missingness |
+|------|------------------------------|-----------------------------------|
+| MCAR | 0                            | 0                                 |
+| MAR  | 75                           | 67.79                             |
+| MNAR | 25                           | 32.20                             |
+| EX   | 0                            | 0                                 |
+| NONE | 0                            | 0                                 |
+
 ```{r, eval=FALSE}
 #Showing overall missingness
 var_Stats[[3]]
@@ -166,22 +162,27 @@ icc<-iccEval(origData=data,
 #Showing the first 8 columns
 icc$`ICC dataframe`[,1:8]
 ```
-```{r, echo=FALSE, warning=FALSE}
-library(knitr)
-x<-read.csv(file='icc_DF.csv')
-kable(x[,2:9] )
 
-```
+| RF     | BPCA   | QRILC   | GSIMP   | RHM   | RMEAN | RMEDIAN | RMIN  |
+|--------|--------|---------|---------|-------|-------|---------|-------|
+| 0.597  | 0.586  | -0.153  | 0.00229 | 0.677 | 0.963 | 0.960   | 0.920 |
+| 0.187  | 0.0387 | 0.056   | 0.0224  | 0.329 | 0.745 | 0.762   | 0.458 |
+| 0.592  | 0.645  | -0.0392 | -0.0432 | 0.425 | 0.938 | 0.938   | 0.931 |
+| 0.0795 | 0.203  | 0.134   | 0.151   | 0.319 | 0.665 | 0.535   | 0.475 |
+| 0.596  | 0.466  | 0.484   | 0.441   | 1     | 1     | 1       | 1     |
+| 0.788  | 0.375  | -0.0927 | -0.0545 | 0     | 0     | 0       | 0     |
+| 0.494  | -.338  | -0.173  | -0.0902 | 0.646 | 0.95  | 0.95    | 0.905 |
+| 0.412  | 0.028  | -0.0159 | 0.0177  | 0.192 | 0.656 | 0.684   | 0.288 |
+
 ```{r, eval=FALSE}
 #Showing the first 8 columns. These are mean differences of the indicated imputation method compared with zero imputation
 icc$`Difference measure`[,1:8]
 ```
-```{r, echo=FALSE, warning=FALSE}
-library(knitr)
-x<-read.csv(file='icc_diff.csv')
-kable(x[,1:9] )
-
-```
+| X     | RF     | BPCA    | QRILC   | GSIMP    | RHM     | RMEAN | RMEDIAN | RMIN  |
+|-------|--------|---------|---------|----------|---------|-------|---------|-------|
+| upper | 0.381  | 0.114   | 0.0697  | 0.0375   | 0.817   | 0.842 | 0.968   | 0.708 |
+| mean  | 0.0836 | 0.032   | 0.0207  | 0.000874 | 0.345   | 0.599 | 0.562   | 0.44  |
+| lower | -0.214 | -0.0498 | -0.0283 | -0.0358  | -0.0126 | 0.356 | 0.155   | 0.172 |
 
 The **ICC_Change_Plot** function plots the mean ICC change with CI of the imputed matrices compared with the zero matrix (in this case)
 ```{r, eval=FALSE}
@@ -214,12 +215,13 @@ counts<-ICC_Counts(icc$`ICC dataframe`)
 #Displaying the first 8 columns
 counts[,1:8]
 ```
-```{r, echo=FALSE, warning=FALSE}
-library(knitr)
-x<-read.csv(file='icc_counts.csv')
-kable(x[,1:9] )
-
-```
+| X            | RF | BPCA | QRILC | GSIMP | RHM | RMEAN | RMEDIAN | RMIN |
+|--------------|----|------|-------|-------|-----|-------|---------|------|
+| Excellent    | 0  | 0    | 0     | 0     | 1   | 4     | 4       | 4    |
+| Good         | 1  | 0    | 0     | 0     | 0   | 0     | 1       | 0    |
+| Moderate     | 3  | 2    | 0     | 0     | 2   | 3     | 2       | 0    |
+| Poor         | 4  | 6    | 3     | 5     | 5   | 1     | 1       | 4    |
+| Inconclusive | 0  | 0    | 5     | 3     | 0   | 0     | 0       | 0    |
 
 The **ICC_Changes** function counts the number of variables that changed from one ICC class to another based on the same criterion as above after imputation. Input information: <br/>
 
@@ -233,11 +235,28 @@ changes<-ICC_Change_Counts(iccImputed = icc$`ICC dataframe`$RHM,
 #Displaying the results
 changes
 ```
-```{r, echo=FALSE, warning=FALSE}
-library(knitr)
-x<-read.csv(file='icc_change.csv')
-kable(x )
-```
+| X                         | V1 |
+|---------------------------|----|
+| Excellent to Good         | 0  |
+| Excellent to Moderate     | 0  |
+| Excellent to Poor         | 0  |
+| Excellent to Inconclusive | 0  |
+| Good to Excellent         | 0  |
+| Good to Moderate          | 0  |
+| Good to Poor              | 0  |
+| Good to Inconclusive      | 0  |
+| Moderate to Excellent     | 0  |
+| Moderate to Good          | 0  |
+| Moderate to Poor          | 0  |
+| Moderate to Inconclusive  | 0  |
+| Poor to Excellent         | 1  |
+| Poor to Good              | 0  |
+| Poor to Moderate          | 0  |
+| Poor to Inconclusive      | 0  |
+| Inconclusive to Excellent | 0  |
+| Inconclusive to Good      | 0  |
+| Inconclusive to Moderate  | 2  |
+| Inconclusive to Poor      | 3  |
 
 
 
@@ -328,8 +347,3 @@ grid.arrange(grobs=graphs[[2]],
 ![](gg1.png)
 ![](gg2.png)
 
-
-
-=======
-See vignette.html
->>>>>>> ba95f31a4c53b793b5fbcbb9c88427e63cd46ab7
