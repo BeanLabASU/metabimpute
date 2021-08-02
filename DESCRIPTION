@@ -17,10 +17,11 @@ Description: A package to evaluate missing data, simulate data matrices and miss
     https://github.com/juuussi/impute-metabo Kokla, M., Virtanen, J., Kolehmainen, M. et al. Random forest-based imputation outperforms 
       other methods for imputing LC-MS metabolomics data: a comparative study. BMC Bioinformatics 20, 492 (2019). 
       https://doi.org/10.1186/s12859-019-3110-0
-Depends: abind, doParallel, e1071, FNN, foreach, gamlss, ggplot2, glmnet, gridExtra, ICC, impute, 
+Depends: R (>3.0)
+License: GNU General Public License v3
+Imports: abind, doParallel, e1071, FNN, foreach, gamlss, ggplot2, glmnet, gridExtra, ICC, impute, 
   imputeLCMD, irr, ltm, magrittr, MASS, Matrix, matrixStats, missForest, missRanger, nonpar, pcaMethods,
   PEMM, pls, randomForest, reshape2, Rmisc, rpart, stats, tidyr, vegan
-License: GNU General Public License v3
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.1.1
