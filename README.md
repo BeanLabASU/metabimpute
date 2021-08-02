@@ -99,10 +99,9 @@ var_Stats[[2]]
 #Showing overall missingness
 var_Stats[[3]]
 ```
-```{r, echo=FALSE, warning=FALSE}
-print(49.1666667)
 
-```
+49.1666667 <br/> <br/>
+
 
 
 The **CullenFrey** function plots skewness vs kurtosis with all variables in the data set plotted. 
