@@ -73,7 +73,7 @@ var_Stats<-variableStatistics(data=data,
 #Showing first two column of variable statistics 
 var_Stats[[1]][,1:2]
 ```
-```{r, echo=FALSE, warning=FALSE}
+```{r,include=FALSE, echo=FALSE, warning=FALSE}
 library(knitr)
 x<-read.csv(file='var_stats.csv')
 kable(x[,1:3])
