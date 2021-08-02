@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ---
 title: "MetabImpute"
 output: rmarkdown::html_vignette
@@ -329,3 +330,6 @@ grid.arrange(grobs=graphs[[2]],
 
 
 
+=======
+See vignette.html
+>>>>>>> ba95f31a4c53b793b5fbcbb9c88427e63cd46ab7
