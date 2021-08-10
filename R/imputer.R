@@ -124,7 +124,7 @@ impute <- function(data, method, local=TRUE, reps) {
     data<- cbind(data,rep_groups)
 
       newData <-data.frame(matrix(nrow=nrow(data),ncol=ncol(data)-1))
-      for (i in 1:length(unique(data$rep_groups))){
+      for (i in 1:length(unique(data[,ncol(data)]))){
         tempData<-data[data[,ncol(data)]==i,]
         for (j in 1:(ncol(data)-1)){
           halfmin<-NA
@@ -158,7 +158,7 @@ impute <- function(data, method, local=TRUE, reps) {
     data<- cbind(data,rep_groups)
 
     newData <- data.frame(matrix(nrow=nrow(data),ncol=ncol(data)-1))
-    for (i in 1:length(unique(data$rep_groups))){
+    for (i in 1:length(unique(data[,ncol(data)]))){
       tempData<-data[data[,ncol(data)]==i,]
       for (j in 1:(ncol(data)-1)){
         mean<-NA
@@ -191,7 +191,7 @@ impute <- function(data, method, local=TRUE, reps) {
     data<- cbind(data,rep_groups)
 
     newData <- data.frame(matrix(nrow=nrow(data),ncol=ncol(data)-1))
-    for (i in 1:length(unique(data$rep_groups))){
+    for (i in 1:length(unique(data[,ncol(data)]))){
       tempData<-data[data[,ncol(data)]==i,]
       for (j in 1:(ncol(data)-1)){
         median<-NA
@@ -225,7 +225,7 @@ impute <- function(data, method, local=TRUE, reps) {
     data<- cbind(data,rep_groups)
 
     newData <- data.frame(matrix(nrow=nrow(data),ncol=ncol(data)-1))
-    for (i in 1:length(unique(data$rep_groups))){
+    for (i in 1:length(unique(data[,ncol(data)]))){
       tempData<-data[data[,ncol(data)]==i,]
       for (j in 1:(ncol(data)-1)){
         min<-NA
@@ -261,7 +261,7 @@ impute <- function(data, method, local=TRUE, reps) {
     data<- cbind(data,rep_groups)
 
     newData <- data.frame(matrix(nrow=nrow(data),ncol=ncol(data)-1))
-    for (i in 1:length(unique(data$rep_groups))){
+    for (i in 1:length(unique(data[,ncol(data)]))){
       tempData<-data[data[,ncol(data)]==i,]
       for (j in 1:(ncol(data)-1)){
 
@@ -493,7 +493,7 @@ impute <- function(data, method, local=TRUE, reps) {
       data<- cbind(data,rep_groups)
 
       newData <-data.frame(matrix(nrow=nrow(data),ncol=ncol(data)-1))
-      for (i in 1:length(unique(data$rep_groups))){
+      for (i in 1:length(unique(data[,ncol(data)]))){
         tempData<-data[data[,ncol(data)]==i,]
         for (j in 1:(ncol(data)-1)){
           if(sum(is.na(tempData[,j]))==reps){
@@ -530,7 +530,7 @@ impute <- function(data, method, local=TRUE, reps) {
       data<- cbind(data,rep_groups)
 
       newData <-data.frame(matrix(nrow=nrow(data),ncol=ncol(data)-1))
-      for (i in 1:length(unique(data$rep_groups))){
+      for (i in 1:length(unique(data[,ncol(data)]))){
         tempData<-data[data[,ncol(data)]==i,]
         for (j in 1:(ncol(data)-1)){
           if(sum(is.na(tempData[,j]))==reps){
@@ -567,7 +567,7 @@ impute <- function(data, method, local=TRUE, reps) {
       data<- cbind(data,rep_groups)
 
       newData <-data.frame(matrix(nrow=nrow(data),ncol=ncol(data)-1))
-      for (i in 1:length(unique(data$rep_groups))){
+      for (i in 1:length(unique(data[,ncol(data)]))){
         tempData<-data[data[,ncol(data)]==i,]
         for (j in 1:(ncol(data)-1)){
           if(sum(is.na(tempData[,j]))==reps){
