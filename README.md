@@ -124,9 +124,9 @@ Input information: <br/>
 **method(s):** in **impute** this is a string from the following list: 'RF', 'BPCA', 'QRILC', 'GSIMP', 'RHM','RMEAN', 'RMEDIAN', 'RMIN','RZERO', 'RRF', 'RGSIMP', 'RQRILC','RBPCA','min','halfmin', 'mean', 'median', 'zero'. In **imputeMulti** this
 is a vector containing a selection of these methods. Any function with R<imputation method> such as RHM or RRF 
 indicates that this is a within replicate method that first zeroes out any replicate groups for a variable where
-there is less than 50% present values. 
+there is less than 50% present values. <br/>
 **local:** is a logical indicating if the user would like to use local imputation (if FALSE, this will use 
-global imputation). This only applies in single value imputation methods.
+global imputation). This only applies in single value imputation methods.<br/>
 **reps:** is the number of replicates. Note that nrow(data) must be divisible by reps. This package does not handle imbalanced replicate groups.
 
 ```{r, eval=FALSE,warning=FALSE,message=FALSE,error=FALSE,results='hide', fig.keep='none'}
@@ -268,10 +268,10 @@ https://github.com/juuussi/impute-metabo Kokla, M., Virtanen, J., Kolehmainen, M
       https://doi.org/10.1186/s12859-019-3110-0 <br/>
       
 Input information: <br/>
-**mcar, mar, mnar:** indicate the percentage of missing data to be imposed on the simulated (complete) data set for each of the indicated missingness mechanisms. 
-**method:** is a list of error evaluation methods which may be 'NRMSE', 'NRMSE-SOR' (as described in Kokla et al.), 'PCA-P' 
-**imputationResults:** is a list of imputed data sets. 
-**simulate_Data:** is a logical indicating whether the data is simulated (and thus centered and scaled) or not
+**mcar, mar, mnar:** indicate the percentage of missing data to be imposed on the simulated (complete) data set for each of the indicated missingness mechanisms. <br/>
+**method:** is a list of error evaluation methods which may be 'NRMSE', 'NRMSE-SOR' (as described in Kokla et al.), 'PCA-P' <br/>
+**imputationResults:** is a list of imputed data sets. <br/>
+**simulate_Data:** is a logical indicating whether the data is simulated (and thus centered and scaled) or not<br/>
 
 ```{r, eval=FALSE}
 #correlation matrix
@@ -298,14 +298,14 @@ errorEvals(origData=simulated,
 
 The **simulateEngine** function wraps the above methods into a function which induces multiple levels of missingness proportions in multiple different missing mechanism ratios and can evaluate different imputation methods and the two error evaluation methods above. The **rearrangeList** function takes the first element of the simulateEngine list and rearranges the data in a format that is simpler to plot. Inputs must match **simulateEngine** where indicated. Finally, **graphEval** takes the first list element of the output of rearrangeList as an input and creates ggplots for each missingness ratio supplied and for each error evalution method indicated. Input information: <br/>
 
-**simIter:** the number of simulated matrices to create and run (results will be averaged over these)
-**simMissIter:** the number of simulated missing matrices to create for each simulated matrix and for each missingness proportion
-**missMax:** the maximum proportion of missingness
-**missMin:** the minimum proportion of missingness
-**missInc:** the proportion of missingness to increment by
+**simIter:** the number of simulated matrices to create and run (results will be averaged over these)<br/>
+**simMissIter:** the number of simulated missing matrices to create for each simulated matrix and for each missingness proportion<br/>
+**missMax:** the maximum proportion of missingness<br/>
+**missMin:** the minimum proportion of missingness<br/>
+**missInc:** the proportion of missingness to increment by<br/>
 **missRatios:** the different ratios of missingness by mechanism (should add up to 1) to impose at a given missingness proportion. Every triplet corresponds to a single missingness case. c(MCAR1, MAR1, MNAR1, MCAR2, MAR2, MNAR2, MCAR3...). Eg if we wanted to mix missingness between all three mechanisms as well as run a mix of 50% of MCAR and 50% of MNAR the list would include
-c(0.33,0.33, 0.34, 0.5, 0, 0.5). Note that the order of missingness proportions is MCAR, MAR, MNAR. 
-**methodsEval:** the list of error evaluations to perform
+c(0.33,0.33, 0.34, 0.5, 0, 0.5). Note that the order of missingness proportions is MCAR, MAR, MNAR. <br/>
+**methodsEval:** the list of error evaluations to perform<br/>
 
 ```{r, eval=FALSE}
 #simulates data, simulates missingness at different percent missingness
