@@ -59,15 +59,15 @@ errorEvals<- function(origData, missData, method, imputationResults, simulate_Da
     if(simulate_Data==T){
 
     for (i in seq_along(imputationResults)){
-      print(origData)
-      print(imputationResults[[i]])
+
+
       pca_Orig<-prcomp(origData, scale. = F, center = F)$x[,1:2]
       score[i]<-procrustes(pca_Orig, prcomp(imputationResults[[i]], scale. =F, center=F)$x[,1:2], symmetric = T)$ss
     }
     }else{
       for (i in seq_along(imputationResults)){
-      print(origData)
-      print(imputationResults[[i]])
+
+
       pca_Orig<-prcomp(origData, scale. = T, center = T)$x[,1:2]
       score[i]<-procrustes(pca_Orig, prcomp(imputationResults[[i]], scale. =T, center=T)$x[,1:2], symmetric = T)$ss
     }
