@@ -333,7 +333,12 @@ results<-rearrangeList(resultList = sim_engine[[1]],
 graphs<-graphEval(results[[1]])
 
 
-plotResults(results=sim_engine, missRatios = c(0,0,1,0,1,0), missMax = 0.4, missMin = 0.1, missInc = 0.1, simIter = 1)
+plotResults(results=sim_engine, 
+            missRatios = c(0,0,1,0,1,0), 
+            missMax = 0.4, 
+            missMin = 0.1, 
+            missInc = 0.1, 
+            simIter = 1)
 
 
 ```
