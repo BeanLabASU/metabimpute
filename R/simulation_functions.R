@@ -430,3 +430,5 @@ rearrangeList<- function (resultList, missRatios, missMax, missMin, missInc, sim
   }
   return (list(ggplotlist, multiplotList, results))
 }
+
+
