@@ -131,7 +131,7 @@ require(gridExtra)
       s<- names(ggplotlist[[i]])[j]
       data<- df %>% gather(key="variable", value= "value", -Percent)
       plot<- ggplot(data, aes(x = Percent, y = value)) +
-        geom_line(aes(color = variable))+ labs(y= s, x = "Missing Proportion")+
+        geom_line(aes(color = variable))+ labs(y= s, x = "Missing Proportion", color="Method")+
         geom_point(aes(color = variable))
       myPlots[[j]]<-plot
     }
