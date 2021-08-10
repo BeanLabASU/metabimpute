@@ -281,7 +281,7 @@ simulateEngine<- function (data, simIter, simMissIter, missMax, missMin, missInc
 
       #add ratio list (which were aggregated) to percent list
       #z<-((missLevel-missMin)/missInc)+1
-      print(z)
+
       percentList[[z]]<-ratioList
       names(percentList)[z]<- paste('percent:', missLevel, sep=' ')
 
