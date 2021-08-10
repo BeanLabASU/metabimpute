@@ -18,12 +18,11 @@
 #' @examples
 #' imputed_data <- impute(data=miss_data, methods=imputation_methods, local=T, reps=3)
 #' #'####################################################
-impute <- function(data, method, local=TRUE, reps) {
+Impute <- function(data, method, local=TRUE, reps) {
   require(doParallel)
   require(missForest)
   require(missRanger)
   require(pcaMethods)
-  require(impute)
   require(PEMM)
   require(imputeLCMD)
   require(magrittr)
@@ -671,7 +670,7 @@ pre_processing_GS_wrapper <- function(data) {
 imputeMulti<- function(methods, data, local=T, reps=NULL){
   results<-list()
   for (i in 1:length(methods)){
-    results[[i]]<-impute(data, method = methods[i], local=local,reps = reps)
+    results[[i]]<-Impute(data, method = methods[i], local=local,reps = reps)
     print(paste("imputed using", methods[i], sep=" "))
     names(results)[i]<-methods[i]
 

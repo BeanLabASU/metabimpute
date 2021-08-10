@@ -460,7 +460,7 @@ plotResults<- function (results){
   graphs<-graphEval(results[[1]])
 
   for(i in 1:length(graphs)){
-    grid.arrange(grobs=graphs[[i]], top=names(graphs)[i], ncol=2)
+    grid.arrange(grobs=graphs[[i]], top=names(graphs)[i], ncol=2, legend('Method'))
   }
 
 

@@ -113,7 +113,7 @@ CullenFrey(data)
 
 ## Imputation
 
-Two main functions may be used to impute. The **impute** function does imputation with a single specified
+Two main functions may be used to impute. The **Impute** function does imputation with a single specified
 method, while **imputeMulti** does imputation using multiple included methods and returns a list of imputed matrices. The GSImp method was incorporated and slightly modified to handle the replicate imputation approach defined in our paper from: <br/>
 
 https://github.com/WandeRum/GSimp (Wei, R., Wang, J., Jia, E., Chen, T., Ni, Y., & Jia, W. (2017). GSimp: 
@@ -121,7 +121,7 @@ https://github.com/WandeRum/GSimp (Wei, R., Wang, J., Jia, E., Chen, T., Ni, Y.,
       
 Input information: <br/>
 
-**method(s):** in **impute** this is a string from the following list: 'RF', 'BPCA', 'QRILC', 'GSIMP', 'RHM','RMEAN', 'RMEDIAN', 'RMIN','RZERO', 'RRF', 'RGSIMP', 'RQRILC','RBPCA','min','halfmin', 'mean', 'median', 'zero'. In **imputeMulti** this
+**method(s):** in **Impute** this is a string from the following list: 'RF', 'BPCA', 'QRILC', 'GSIMP', 'RHM','RMEAN', 'RMEDIAN', 'RMIN','RZERO', 'RRF', 'RGSIMP', 'RQRILC','RBPCA','min','halfmin', 'mean', 'median', 'zero'. In **imputeMulti** this
 is a vector containing a selection of these methods. Any function with R<imputation method> such as RHM or RRF 
 indicates that this is a within replicate method that first zeroes out any replicate groups for a variable where
 there is less than 50% present values. <br/>
@@ -130,7 +130,7 @@ global imputation). This only applies in single value imputation methods.<br/>
 **reps:** is the number of replicates. Note that nrow(data) must be divisible by reps. This package does not handle imbalanced replicate groups.
 
 ```{r, eval=FALSE,warning=FALSE,message=FALSE,error=FALSE,results='hide', fig.keep='none'}
-imp<-impute(data=data, method="RF",local=T, reps=5)
+imp<-Impute(data=data, method="RF",local=T, reps=5)
 
 impMulti<-imputeMulti(methods=c('RF', 'BPCA', 'QRILC', 'GSIMP', 'RHM','RMEAN', 
                                 'RMEDIAN', 'RMIN','RZERO', 'RRF','RGSIMP', 
