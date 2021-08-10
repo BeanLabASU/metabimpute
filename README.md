@@ -194,13 +194,16 @@ ICC_Change_Plot(iccMeasure=icc$`Difference measure`,
 
 ```
 ![](icc_Change_Plot.png)
-The **ICC_Scatter_Plot** function was developed to assist in identifying whether the cause of ICC changes was due to our Replicate imputation approach which permutes an entire replicate to zero if less than 50% of the replicate group have present values.   
+The **ICC_Scatter_Plot** function was developed to assist in identifying whether the cause of ICC changes was due to our Replicate imputation approach which permutes an entire replicate to zero if less than 50% of the replicate group have present values. This function outputs the plot below.   
 ```{r, eval=FALSE}
-ICC_Scatter_Plot(data = data, 
+scatterPlot<-ICC_Scatter_Plot(data = data, 
                  reps=5, 
                  iccImputed = icc$`ICC dataframe`$RMEAN, 
                  iccComparison = icc$`ICC dataframe`$zero, 
                  plotTitle = "RMEAN vs zero")
+                 
+#scatterPlot[[1]] contains the data used to plot
+#scatterPlot[[2]] contains ggplot2 object
 
 ```
 ![](icc_Scatter.png)
