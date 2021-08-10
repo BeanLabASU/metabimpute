@@ -303,8 +303,8 @@ The **simulateEngine** function wraps the above methods into a function which in
 **missMax:** the maximum proportion of missingness
 **missMin:** the minimum proportion of missingness
 **missInc:** the proportion of missingness to increment by
-**missRatios:** the different ratios of missingness by mechanism (should add up to 1) to impose at a given missingness proportion. Eg if we wanted to mix missingness between all three mechanisms the list would include
-c(0.33,0.33, 0.34). 
+**missRatios:** the different ratios of missingness by mechanism (should add up to 1) to impose at a given missingness proportion. Every triplet corresponds to a single missingness case. c(MCAR1, MAR1, MNAR1, MCAR2, MAR2, MNAR2, MCAR3...). Eg if we wanted to mix missingness between all three mechanisms as well as run a mix of 50% of MCAR and 50% of MNAR the list would include
+c(0.33,0.33, 0.34, 0.5, 0, 0.5). Note that the order of missingness proportions is MCAR, MAR, MNAR. 
 **methodsEval:** the list of error evaluations to perform
 
 ```{r, eval=FALSE}
@@ -315,7 +315,7 @@ sim_engine<-simulateEngine(data=as.data.frame(data),
                            missMax = 0.4, 
                            missMin = 0.1,
                            missInc = 0.1, 
-                           missRatios = list(c(0,0,1), c(0,1,0)), 
+                           missRatios = c(0,0,1,0,1,0), 
                            methodsImp = c('RF', 'RBPCA','min'), 
                            methodsEval = c('NRMSE', 'PCA-P'),
                            reps=5, 
@@ -323,7 +323,7 @@ sim_engine<-simulateEngine(data=as.data.frame(data),
 
 #rearranges results into a list of DFs that are easier to plot with GGPlot2
 results<-rearrangeList(resultList = sim_engine[[1]], 
-                       missRatios = list(c(0,0,1), c(0,1,0)), 
+                       missRatios = c(0,0,1,0,1,0), 
                        missMax = 0.4, 
                        missMin = 0.1, 
                        missInc = 0.1, 
@@ -332,13 +332,8 @@ results<-rearrangeList(resultList = sim_engine[[1]],
 #GGplot2 dataframes are contained in rearrangeList output's first element
 graphs<-graphEval(results[[1]])
 
-#The first position in graphEval contains the first missingness ratio supplied to missRatios
-grid.arrange(grobs=graphs[[1]], 
-             top=names(graphs)[1], 
-             ncol=2)
-grid.arrange(grobs=graphs[[2]], 
-             top=names(graphs)[2], 
-             ncol=2)
+
+plotResults(results=sim_engine, missRatios = c(0,0,1,0,1,0), missMax = 0.4, missMin = 0.1, missInc = 0.1, simIter = 1)
 
 
 ```
