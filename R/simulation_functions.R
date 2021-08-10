@@ -210,6 +210,7 @@ simulate_missingness <- function(data, mcar=0, mar=0, mnar=0, mnar.type="left", 
 simulateEngine<- function (data, simIter, simMissIter, missMax, missMin, missInc, missRatios, methodsImp,
                            methodsEval, simulate_Data=T, reps){
 
+  params<-list(missRatios, missMax, missMin, missInc, simIter)
   rep_groups <- c(rep(1:(nrow(data)/reps), times=1, each=reps))
   startTime<-Sys.time()
   resultList<- list()
@@ -300,7 +301,7 @@ simulateEngine<- function (data, simIter, simMissIter, missMax, missMin, missInc
 
   endTime<-Sys.time()
 
-  return(list(resultList, (endTime-startTime), simList, missingMatrixList))
+  return(list(resultList, (endTime-startTime), simList, missingMatrixList, params))
 
 }
 
@@ -347,10 +348,16 @@ aggregateDFList<- function (list ){
 #' @return a ggplot formatted list
 #' @export
 
-rearrangeList<- function (resultList, missRatios, missMax, missMin, missInc, simIter){
+rearrangeList<- function (result){
   #reorganizing the results of resultsList so that we list by ratio first, percent second and aggregate all
   #together
   results<-list()
+  resultList<-result[[1]]
+  missRatios<-result[[5]][[1]]
+  missMax<-as.numeric(result[[5]][[2]])
+  missMin<-as.numeric(result[[5]][[3]])
+  missInc<-as.numeric(result[[5]][[4]])
+  simIter<-as.numeric(result[[5]][[5]])
 
   miss_rat<-list()
   for(i in 1:(length(missRatios)/3)){
@@ -444,13 +451,11 @@ rearrangeList<- function (resultList, missRatios, missMax, missMin, missInc, sim
 #' @return a ggplot formatted list
 #' @export
 
-plotResults<- function (results, missRatios, missMax, missMin, missInc, simIter){
+plotResults<- function (results){
 
 
 
-  results<-rearrangeList(resultList = results[[1]],
-                         missRatios = missRatios,
-                         missMax = missMax, missMin = missMin, missInc = missInc, simIter = simIter)
+  results<-rearrangeList(result=results)
 
   graphs<-graphEval(results[[1]])
 
