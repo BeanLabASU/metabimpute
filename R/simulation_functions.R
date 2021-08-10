@@ -216,6 +216,15 @@ simulateEngine<- function (data, simIter, simMissIter, missMax, missMin, missInc
   simList<-list()
   missingMatrixList<-list()
   counter<-1
+
+  miss_rat<-list()
+  for(i in 1:(length(missRatios)/3)){
+    miss_rat[[i]]<-missRatios[i:(i+2)]
+      }
+
+  missRatios<-miss_rat
+
+
   for (i in 1:simIter){
     if(simulate_Data==T){
       simData<-simulate(rownum = nrow(data), colnum = ncol(data), corMat = correlationMatrix(data)$corMat)
@@ -342,6 +351,13 @@ rearrangeList<- function (resultList, missRatios, missMax, missMin, missInc, sim
   #reorganizing the results of resultsList so that we list by ratio first, percent second and aggregate all
   #together
   results<-list()
+
+  miss_rat<-list()
+  for(i in 1:(length(missRatios)/3)){
+    miss_rat[[i]]<-missRatios[i:(i+2)]
+  }
+
+  missRatios<-miss_rat
 
 
 
