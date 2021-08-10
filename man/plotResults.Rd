@@ -4,12 +4,10 @@
 \alias{plotResults}
 \title{plotresults}
 \usage{
-plotResults(results, missRatios, missMax, missMin, missInc, simIter)
+plotResults(results)
 }
 \arguments{
 \item{results}{from simulate engine}
-
-\item{missRatios}{from sim engine}
 
 \item{missMax}{from simulate engine}
 
@@ -18,6 +16,8 @@ plotResults(results, missRatios, missMax, missMin, missInc, simIter)
 \item{missInc}{from simulae engine}
 
 \item{simIter}{from simulate engine}
+
+\item{missRatios}{from sim engine}
 }
 \value{
 a ggplot formatted list

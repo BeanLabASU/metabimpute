@@ -296,7 +296,7 @@ errorEvals(origData=simulated,
            simulate_Data = T)
 ```
 
-The **simulateEngine** function wraps the above methods into a function which induces multiple levels of missingness proportions in multiple different missing mechanism ratios and can evaluate different imputation methods and the two error evaluation methods above. The **rearrangeList** function takes the first element of the simulateEngine list and rearranges the data in a format that is simpler to plot. Inputs must match **simulateEngine** where indicated. Finally, **graphEval** takes the first list element of the output of rearrangeList as an input and creates ggplots for each missingness ratio supplied and for each error evalution method indicated. Input information: <br/>
+The **simulateEngine** function wraps the above methods into a function which induces multiple levels of missingness proportions in multiple different missing mechanism ratios and can evaluate different imputation methods and the two error evaluation methods above. The **rearrangeList** function takes the output of the **simulateEngine** function and rearranges the data in a format that is simpler to plot. Inputs must match **simulateEngine** where indicated. **graphEval** takes the first list element of the output of rearrangeList as an input and creates ggplots for each missingness ratio supplied and for each error evalution method indicated. Finally, **plotResults** takes the output of **simulateEnging** and generates panel ggplots for each missingness condition (for both or one error evaluation method). Input information: <br/>
 
 **simIter:** the number of simulated matrices to create and run (results will be averaged over these)<br/>
 **simMissIter:** the number of simulated missing matrices to create for each simulated matrix and for each missingness proportion<br/>
@@ -322,23 +322,15 @@ sim_engine<-simulateEngine(data=as.data.frame(data),
                            simulate_Data = T)
 
 #rearranges results into a list of DFs that are easier to plot with GGPlot2
-results<-rearrangeList(resultList = sim_engine[[1]], 
-                       missRatios = c(0,0,1,0,1,0), 
-                       missMax = 0.4, 
-                       missMin = 0.1, 
-                       missInc = 0.1, 
-                       simIter = 1)
+results<-rearrangeList(result = sim_engine)
 
 #GGplot2 dataframes are contained in rearrangeList output's first element
 graphs<-graphEval(results[[1]])
+#panel plot, only first one is produced corresponding to the first missingness ratio inputted. 
+grid.arrange(grobs=graphs[[1]], top=names(graphs)[1], ncol=2)
 
-
-plotResults(results=sim_engine, 
-            missRatios = c(0,0,1,0,1,0), 
-            missMax = 0.4, 
-            missMin = 0.1, 
-            missInc = 0.1, 
-            simIter = 1)
+#function to produce ggplots without using the previous two lines of code
+plotResults(results=sim_engine)
 
 
 ```

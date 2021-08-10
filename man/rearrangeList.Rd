@@ -4,11 +4,9 @@
 \alias{rearrangeList}
 \title{rearrangeList}
 \usage{
-rearrangeList(resultList, missRatios, missMax, missMin, missInc, simIter)
+rearrangeList(result)
 }
 \arguments{
-\item{missRatios}{from sim engine}
-
 \item{missMax}{from simulate engine}
 
 \item{missMin}{from simulate engine}
@@ -16,6 +14,8 @@ rearrangeList(resultList, missRatios, missMax, missMin, missInc, simIter)
 \item{missInc}{from simulae engine}
 
 \item{simIter}{from simulate engine}
+
+\item{missRatios}{from sim engine}
 }
 \value{
 a ggplot formatted list
