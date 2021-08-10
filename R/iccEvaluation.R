@@ -164,6 +164,8 @@ ICC_Scatter_Plot<-function(data, reps, iccImputed, iccComparison, plotTitle){
 
   result[[2]]<-plot
 
+  print(plot)
+
   return(result)
 
 }
