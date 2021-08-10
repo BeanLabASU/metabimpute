@@ -431,4 +431,34 @@ rearrangeList<- function (resultList, missRatios, missMax, missMin, missInc, sim
   return (list(ggplotlist, multiplotList, results))
 }
 
+#' plotresults
+#'
+#' The purpose of this functino is to take the results from simulateEngine and output a list of data frames
+#' that are useable by ggPlots
+#' @param results from simulate engine
+#' @param missMax from simulate engine
+#' @param missMin from simulate engine
+#' @param missInc from simulae engine
+#' @param simIter from simulate engine
+#' @param missRatios from sim engine
+#' @return a ggplot formatted list
+#' @export
 
+plotResults<- function (results, missRatios, missMax, missMin, missInc, simIter){
+
+
+
+  results<-rearrangeList(resultList = results[[1]],
+                         missRatios = missRatios,
+                         missMax = missMax, missMin = missMin, missInc = missInc, simIter = simIter)
+
+  graphs<-graphEval(results[[1]])
+
+  for(i in 1:length(graphs)){
+    grid.arrange(grobs=graphs[[i]], top=names(graphs)[i], ncol=2)
+  }
+
+
+
+
+}
