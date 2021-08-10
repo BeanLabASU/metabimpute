@@ -1,7 +1,7 @@
 
 
 
-#' Title impute
+#' Title Impute
 #' This functions contains different imputation methods and imputes the data with all
 #' the different imputation methods
 #' @param data data matrix with simulated data
