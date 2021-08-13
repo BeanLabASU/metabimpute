@@ -7,7 +7,7 @@
 errorEvals(origData, missData, method, imputationResults, simulate_Data = T)
 }
 \arguments{
-\item{method}{string "NRMSE" "NRMSE-SOR", "PCA-P"}
+\item{method}{string "NRMSE" "PCA-P"}
 
 \item{imputationResults}{is specifically a list of imputed dataframes from all the chosen methods, used in SOR}
 }

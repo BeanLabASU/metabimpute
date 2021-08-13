@@ -14,7 +14,6 @@
 iccEval<-function(origData, reps, imputed, methods){
 
   require(Rmisc)
-  require(irr)
   require(ggplot2)
   require(ICC)
 

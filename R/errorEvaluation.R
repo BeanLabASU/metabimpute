@@ -3,7 +3,7 @@
 #' this will be a function that utilizes all of the different error analysis tools into one nice function
 #' @param origData
 #' @param missData
-#' @param method string "NRMSE" "NRMSE-SOR", "PCA-P"
+#' @param method string "NRMSE" "PCA-P"
 #' @param imputationResults is specifically a list of imputed dataframes from all the chosen methods, used in SOR
 #' @results a list of error measurements across imputations methods
 #' @export
@@ -15,7 +15,6 @@ errorEvals<- function(origData, missData, method, imputationResults, simulate_Da
   require(doParallel)
   require(reshape2)
   require(ggplot2)
-  require(pls)
 
   score<-vector(mode="numeric", length=length(imputationResults))
   for (i in seq_along(imputationResults)){
@@ -36,23 +35,6 @@ errorEvals<- function(origData, missData, method, imputationResults, simulate_Da
   }
 
 
-  if (method=="NRMSE-SOR"){
-
-
-    for (i in 1:ncol(origData)){
-      temp_NRMSE<- vector(mode="numeric", length=length(imputationResults))
-      rank_NRMSE<-temp_NRMSE
-      for (k in seq_along(imputationResults)){
-        temp_NRMSE[k]<-nrmse(ximp=imputationResults[[k]][,i], xmis=missData[,i],xtrue=origData[,i])
-
-      }
-      rank_NRMSE<-rank(temp_NRMSE, ties.method = "min")
-      score<-score+rank_NRMSE
-
-    }
-
-
-  }
 
   if (method=="PCA-P"){
 
@@ -165,7 +147,6 @@ return(plotList)
 iccEval<-function(origData, groups, imputed, methods){
 
   require(Rmisc)
-  require(irr)
   require(ggplot2)
   require(ICC)
 
