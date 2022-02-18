@@ -202,13 +202,14 @@ simulate_missingness <- function(data, mcar=0, mar=0, mnar=0, mnar.type="left", 
 #' specify that we want a split of 50-50 MAR MNAR for each missingness level
 #' @param methodsImp the imputation methods to be utilized.
 #' @param medthodsEval the methods of error evaluation to be utilized.
+#' @param threshold the rep impute threshold value as in the impute method
 #'
 #' @returns a collection of dataframes containing the errors of imp methods for each eval method listed by
 #' proportion of missingness and total percent of missingness.
 #' @export
 
 simulateEngine<- function (data, simIter, simMissIter, missMax, missMin, missInc, missRatios, methodsImp,
-                           methodsEval, simulate_Data=T, reps){
+                           methodsEval, simulate_Data=T, reps, threshold){
 
   params<-list(missRatios, missMax, missMin, missInc, simIter)
   rep_groups <- c(rep(1:(nrow(data)/reps), times=1, each=reps))
@@ -265,7 +266,7 @@ simulateEngine<- function (data, simIter, simMissIter, missMax, missMin, missInc
           counter<-counter+1
           print(paste("Missing matrix", m, "of", missLevel, "percent with ratios", mcar, mar, mnar, sep=" "))
 
-          imputeResults<-imputeMulti(methods=methodsImp, data=missData, reps=reps)
+          imputeResults<-imputeMulti(methods=methodsImp, data=missData, reps=reps, threshold=threshold)
           errors<-simEval(origData=simData, missData=missData, methods=methodsEval, imputationResults = imputeResults, simulate_Data=simulate_Data)
           print("evaluted errors, added to list")
           missingDataList[[m]]<-errors
