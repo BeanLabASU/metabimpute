@@ -128,16 +128,18 @@ there is less than 50% present values. <br/>
 **local:** is a logical indicating if the user would like to use local imputation (if FALSE, this will use 
 global imputation). This only applies in single value imputation methods.<br/>
 **reps:** is the number of replicates. Note that nrow(data) must be divisible by reps. This package does not handle imbalanced replicate groups.
+**rep_threshold:** is the threshold value (a percent) representing the number of missing values per replicate which will permute the entire replicate to zero under the rep impute algorithm. As an example, if we have 5 replicates per group, and decide to zero out the replicate group if there are 4 or 5 NAs in the replicate, we would set our threshold to 4/5. If we wanted to zero out any group with 2 or more missing values, then we would choose 2/5. 
 
 ```{r, eval=FALSE,warning=FALSE,message=FALSE,error=FALSE,results='hide', fig.keep='none'}
-imp<-Impute(data=data, method="RF",local=T, reps=5)
+imp<-Impute(data=data, method="RF",local=T, reps=5, rep_threshold=0.5)
 
 impMulti<-imputeMulti(methods=c('RF', 'BPCA', 'QRILC', 'GSIMP', 'RHM','RMEAN', 
                                 'RMEDIAN', 'RMIN','RZERO', 'RRF','RGSIMP', 
                                 'RQRILC','RBPCA','min','halfmin', 'mean', 
                                 'median', 'zero'), 
                       data, 
-                      reps = 5)
+                      reps = 5,
+                      rep_threshold=0.5)
 ```
 
 ## ICC Evaluation
@@ -194,10 +196,12 @@ ICC_Change_Plot(iccMeasure=icc$`Difference measure`,
 
 ```
 ![](icc_Change_Plot.png)
-The **ICC_Scatter_Plot** function was developed to assist in identifying whether the cause of ICC changes was due to our Replicate imputation approach which permutes an entire replicate to zero if less than 50% of the replicate group have present values. This function outputs the plot below.   
+The **ICC_Scatter_Plot** function was developed to assist in identifying whether the cause of ICC changes was due to our Replicate imputation approach which permutes an entire replicate to zero if less than 50% of the replicate group have present values. This function outputs the plot below. 
+**threshold** is analagous to **rep_threshold** in the impute method and thus should match. 
 ```{r, eval=FALSE}
 scatterPlot<-ICC_Scatter_Plot(data = data, 
                  reps=5, 
+                 threshold=0.5,
                  iccImputed = icc$`ICC dataframe`$RMEAN, 
                  iccComparison = icc$`ICC dataframe`$zero, 
                  plotTitle = "RMEAN vs zero")
@@ -309,6 +313,7 @@ The **simulateEngine** function wraps the above methods into a function which in
 **missRatios:** the different ratios of missingness by mechanism (should add up to 1) to impose at a given missingness proportion. Every triplet corresponds to a single missingness case. c(MCAR1, MAR1, MNAR1, MCAR2, MAR2, MNAR2, MCAR3...). Eg if we wanted to mix missingness between all three mechanisms as well as run a mix of 50% of MCAR and 50% of MNAR the list would include
 c(0.33,0.33, 0.34, 0.5, 0, 0.5). Note that the order of missingness proportions is MCAR, MAR, MNAR. <br/>
 **methodsEval:** the list of error evaluations to perform<br/>
+**threshold:** is analagous to **rep_threshold** in the impute function and should match.
 
 ```{r, eval=FALSE}
 #simulates data, simulates missingness at different percent missingness
@@ -322,6 +327,7 @@ sim_engine<-simulateEngine(data=as.data.frame(data),
                            methodsImp = c('RF', 'RBPCA','min'), 
                            methodsEval = c('NRMSE', 'PCA-P'),
                            reps=5, 
+                           threshold=0.5,
                            simulate_Data = T)
 
 #rearranges results into a list of DFs that are easier to plot with GGPlot2
