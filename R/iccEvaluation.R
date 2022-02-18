@@ -124,11 +124,12 @@ ICC_Change_Plot<-function(iccMeasure, methods, title){
 #'@param iccImputed ICCs of the data after an imputation method
 #'@param iccComparison ICCs of the comparison data (eg zero imputed matrix)
 #'@param plotTitle string
+#'@param threshold the rep_threshold value used in the impute function
 #'
 #'@return result list of the scatter plot data and the ggplot
 #'@export
 
-ICC_Scatter_Plot<-function(data, reps, iccImputed, iccComparison, plotTitle){
+ICC_Scatter_Plot<-function(data, reps, iccImputed, iccComparison, plotTitle, threshold){
   result<-list()
   rep_groups <- c(rep(1:nrow(data)/reps, times=1, each=reps))
 
@@ -143,7 +144,7 @@ ICC_Scatter_Plot<-function(data, reps, iccImputed, iccComparison, plotTitle){
   for(i in 1:ncol(rawData_Filtered)){
     count<-0
     for(j in 1:length(unique(rep_groups))){
-      if(sum(is.na(rawData_Filtered[rep_groups==j,i]))>=0.5*reps){
+      if(sum(is.na(rawData_Filtered[rep_groups==j,i]))>=threshold*reps){
         count<-count+1
       }
     }
