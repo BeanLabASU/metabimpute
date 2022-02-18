@@ -127,8 +127,8 @@ indicates that this is a within replicate method that first zeroes out any repli
 there is less than 50% present values. <br/>
 **local:** is a logical indicating if the user would like to use local imputation (if FALSE, this will use 
 global imputation). This only applies in single value imputation methods.<br/>
-**reps:** is the number of replicates. Note that nrow(data) must be divisible by reps. This package does not handle imbalanced replicate groups.
-**rep_threshold:** is the threshold value (a percent) representing the number of missing values per replicate which will permute the entire replicate to zero under the rep impute algorithm. As an example, if we have 5 replicates per group, and decide to zero out the replicate group if there are 4 or 5 NAs in the replicate, we would set our threshold to 4/5. If we wanted to zero out any group with 2 or more missing values, then we would choose 2/5. 
+**reps:** is the number of replicates. Note that nrow(data) must be divisible by reps. This package does not handle imbalanced replicate groups.<br/>
+**rep_threshold:** is the threshold value (a percent) representing the number of missing values per replicate which will permute the entire replicate to zero under the rep impute algorithm. As an example, if we have 5 replicates per group, and decide to zero out the replicate group if there are 4 or 5 NAs in the replicate, we would set our threshold to 4/5. If we wanted to zero out any group with 2 or more missing values, then we would choose 2/5. <br/>
 
 ```{r, eval=FALSE,warning=FALSE,message=FALSE,error=FALSE,results='hide', fig.keep='none'}
 imp<-Impute(data=data, method="RF",local=T, reps=5, rep_threshold=0.5)
@@ -196,8 +196,8 @@ ICC_Change_Plot(iccMeasure=icc$`Difference measure`,
 
 ```
 ![](icc_Change_Plot.png)
-The **ICC_Scatter_Plot** function was developed to assist in identifying whether the cause of ICC changes was due to our Replicate imputation approach which permutes an entire replicate to zero if less than 50% of the replicate group have present values. This function outputs the plot below. 
-**threshold** is analagous to **rep_threshold** in the impute method and thus should match. 
+The **ICC_Scatter_Plot** function was developed to assist in identifying whether the cause of ICC changes was due to our Replicate imputation approach which permutes an entire replicate to zero if less than 50% of the replicate group have present values. This function outputs the plot below.<br/> 
+**threshold** is analagous to **rep_threshold** in the impute method and thus should match. <br/>
 ```{r, eval=FALSE}
 scatterPlot<-ICC_Scatter_Plot(data = data, 
                  reps=5, 
