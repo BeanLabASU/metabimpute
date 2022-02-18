@@ -11,14 +11,17 @@
 #' @param local a boolean to determine if local rep_impute method is to be used, default to true.
 #' @param reps the number of replicate groups
 #' simulated data that doesn't require log preprocessing.
-#'
+#' @param rep_threshold the threshold value for number of NA values over which the entire replicate group
+#' is permuted to 0. For example. If I have 5 replicates, and set my threshold to 3/5, then any group with 
+#' 3 NAs, 4 NAs and 5 NAs will be permuted to zero (including the present values), those replicate groups 
+#' where there are 2 NAs, 1 NA or 0 NAs will be left for imputation based upon your given method. 
 #' @return results_data the matrix containing the imputed data
 #' @export
 #'
 #' @examples
 #' imputed_data <- impute(data=miss_data, methods=imputation_methods, local=T, reps=3)
 #' #'####################################################
-Impute <- function(data, method, local=TRUE, reps) {
+Impute <- function(data, method, local=TRUE, reps, rep_threshold=0.5) {
   require(doParallel)
   require(missForest)
   require(missRanger)
@@ -167,7 +170,7 @@ Impute <- function(data, method, local=TRUE, reps) {
           mean<-mean(data[,j],na.rm=TRUE)
         }
 
-        if (sum(is.na(tempData[,j]))>=(0.5*reps)){
+        if (sum(is.na(tempData[,j]))>=(rep_threshold*reps)){
           tempData[,j]<-0
         }else {
           tempData[is.na(tempData[,j]),j]<- mean
@@ -200,7 +203,7 @@ Impute <- function(data, method, local=TRUE, reps) {
           median<-median(data[,j],na.rm=TRUE)
         }
 
-        if (sum(is.na(tempData[,j]))>=(0.5*reps)){
+        if (sum(is.na(tempData[,j]))>=(rep_threshold*reps)){
           tempData[,j]<-0
         }else {
           tempData[is.na(tempData[,j]),j]<- median
@@ -234,7 +237,7 @@ Impute <- function(data, method, local=TRUE, reps) {
           min<-min(data[,j],na.rm=TRUE)
         }
 
-        if (sum(is.na(tempData[,j]))>=(0.5*reps)){
+        if (sum(is.na(tempData[,j]))>=(rep_threshold*reps)){
           tempData[,j]<-0
         }else {
           tempData[is.na(tempData[,j]),j]<- min
@@ -264,7 +267,7 @@ Impute <- function(data, method, local=TRUE, reps) {
       tempData<-data[data[,ncol(data)]==i,]
       for (j in 1:(ncol(data)-1)){
 
-        if (sum(is.na(tempData[,j]))>=(0.5*reps)){
+        if (sum(is.na(tempData[,j]))>=(rep_threshold*reps)){
           tempData[,j]<-0
         }else {
           tempData[is.na(tempData[,j]),j]<-0
@@ -291,7 +294,7 @@ Impute <- function(data, method, local=TRUE, reps) {
     for (i in 1:length(unique(rep_groups))){
       tempData<-data[data[,ncol(data)]==i,]
       for (j in 1:(ncol(data)-1)){
-        if (sum(is.na(tempData[,j]))>=(0.5*reps)){
+        if (sum(is.na(tempData[,j]))>=(rep_threshold*reps)){
           tempData[,j]<-0
         }
         newData[((reps*i)-(reps-1)):(reps*i),]<-tempData[,1:(ncol(tempData)-1)]
@@ -316,7 +319,7 @@ Impute <- function(data, method, local=TRUE, reps) {
     for (i in 1:length(unique(rep_groups))){
       tempData<-data[data[,ncol(data)]==i,]
       for (j in 1:(ncol(data)-1)){
-        if (sum(is.na(tempData[,j]))>=(0.5*reps)){
+        if (sum(is.na(tempData[,j]))>=(rep_threshold*reps)){
           tempData[,j]<-0
         }
         newData[((reps*i)-(reps-1)):(reps*i),]<-tempData[,1:(ncol(tempData)-1)]
@@ -392,7 +395,7 @@ Impute <- function(data, method, local=TRUE, reps) {
     for (i in 1:length(unique(rep_groups))){
       tempData<-data[data[,ncol(data)]==i,]
       for (j in 1:(ncol(data)-1)){
-        if (sum(is.na(tempData[,j]))>=(0.5*reps)){
+        if (sum(is.na(tempData[,j]))>=(rep_threshold*reps)){
           tempData[,j]<-0.0
         }
         newData[((reps*i)-(reps-1)):(reps*i),]<-tempData[,1:(ncol(tempData)-1)]
@@ -428,7 +431,7 @@ Impute <- function(data, method, local=TRUE, reps) {
     for (i in 1:length(unique(rep_groups))){
       tempData<-data[data[,ncol(data)]==i,]
       for (j in 1:(ncol(data)-1)){
-        if (sum(is.na(tempData[,j]))>=(0.5*reps)){
+        if (sum(is.na(tempData[,j]))>=(rep_threshold*reps)){
           tempData[,j]<-0
         }
         newData[((reps*i)-(reps-1)):(reps*i),]<-tempData[,1:(ncol(tempData)-1)]
@@ -667,10 +670,10 @@ pre_processing_GS_wrapper <- function(data) {
 #' @return a list containing the dataframes of the imputed data
 #' @export
 
-imputeMulti<- function(methods, data, local=T, reps=NULL){
+imputeMulti<- function(methods, data, local=T, reps=NULL, rep_threshold=0.5){
   results<-list()
   for (i in 1:length(methods)){
-    results[[i]]<-Impute(data, method = methods[i], local=local,reps = reps)
+    results[[i]]<-Impute(data, method = methods[i], local=local,reps = reps, rep_threshold=rep_threshold)
     print(paste("imputed using", methods[i], sep=" "))
     names(results)[i]<-methods[i]
 
