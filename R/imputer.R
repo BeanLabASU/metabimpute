@@ -136,7 +136,7 @@ Impute <- function(data, method, local=TRUE, reps, rep_threshold=0.5) {
             halfmin<-min(data[,j],na.rm=TRUE)/2
           }
 
-          if (sum(is.na(tempData[,j]))>=(0.5*reps) ){
+          if (sum(is.na(tempData[,j]))>=(rep_threshold*reps) ){
             tempData[,j]<-0
           }else {
             tempData[is.na(tempData[,j]),j]<- halfmin
