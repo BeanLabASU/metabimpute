@@ -146,7 +146,9 @@ impMulti<-imputeMulti(methods=c('RF', 'BPCA', 'QRILC', 'GSIMP', 'RHM','RMEAN',
 
 Since a primary focus of our paper and package is to provide imputation methods that can take biological or 
 technical replicates into account. This package includes several functions that can evaluate ICC changes 
-between imputed matrices. 
+between imputed matrices. <br/>
+      
+**Note: Prior to ICC evaluation, we utilized PQN normalization. This step is omitted in the package and is up to the user's discretion to apply or not apply** 
 
 The **iccEval** function returns a list of data frames containing the ICCs for each variable, and difference measures between the imputation methods and the last imputation method included, in the example below this is a comparison of the ICC of each imputation method from 'RF' to 'median' compared with the zero imputed data frame's ICC. The measure is done in 3 ways, average difference in ICC (with 95% CI), average absolute difference (with 95% CI) and average difference of squares (with 95% CI). Only the difference measure will be shown for brevity. Information on inputs: <br/>
 
