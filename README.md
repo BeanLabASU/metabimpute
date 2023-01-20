@@ -27,7 +27,7 @@ been done. Lastly, we have included methods which simulate data based on covaria
 specific types (MCAR, MAR, and MNAR), impute using various methods and then evaluate these imputation approaches using 
 NRMSE or PCA-Procrustes analysis. This package is licensed under GNU GPL version 3. Please cite our paper if you use this package or elements contained within it using the following citation: <br/>
 
-(_     ______) <br/>
+Trenton J. Davis, Tarek R. Firzli, Emily A. Higgins Keppler, Matthew Richardson, and Heather D. Bean. Addressing Missing Data in GC × GC Metabolomics: Identifying Missingness Type and Evaluating the Impact of Imputation Methods on Experimental Replication. Analytical Chemistry 2022 94 (31), 10912-10920. DOI: 10.1021/acs.analchem.1c04093 <br/>
 
 Special thanks to the following work which was copied, modified and or adapted to aid in the creation of this package: <br/>
 https://github.com/Tirgit/missCompare, <br/>
