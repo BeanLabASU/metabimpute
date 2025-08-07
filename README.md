@@ -4,9 +4,7 @@
 ## Introduction
 
 ```{r setup, eval=FALSE, warning=FALSE,message=FALSE,error=FALSE}
-
 library(MetabImpute)
-
 ```
 
 MetabImpute is a package with multiple tools for use in the analysis and imputation of missing data, geared towards 
@@ -27,26 +25,26 @@ been done. Lastly, we have included methods which simulate data based on covaria
 specific types (MCAR, MAR, and MNAR), impute using various methods and then evaluate these imputation approaches using 
 NRMSE or PCA-Procrustes analysis. This package is licensed under GNU GPL version 3. Please cite our paper if you use this package or elements contained within it using the following citation: <br/>
 
-Trenton J. Davis, Tarek R. Firzli, Emily A. Higgins Keppler, Matthew Richardson, and Heather D. Bean. Addressing Missing Data in GC × GC Metabolomics: Identifying Missingness Type and Evaluating the Impact of Imputation Methods on Experimental Replication. Analytical Chemistry 2022 94 (31), 10912-10920. DOI: 10.1021/acs.analchem.1c04093 <br/>
+Trenton J. Davis, Tarek R. Firzli, Emily A. Higgins Keppler, Matthew Richardson, and Heather D. Bean. (2022) Addressing Missing Data in GC × GC Metabolomics:            Identifying Missingness Type and Evaluating the Impact of Imputation Methods on Experimental Replication. Analytical Chemistry 94 (31), 10912-10920. DOI:                10.1021/acs.analchem.1c04093 <br/>
 
-Special thanks to the following work which was copied, modified and or adapted to aid in the creation of this package: <br/>
-https://github.com/Tirgit/missCompare, <br/>
-https://github.com/WandeRum/GSimp (Wei, R., Wang, J., Jia, E., Chen, T., Ni, Y., & Jia, W. (2017). GSimp: 
-      A Gibbs sampler based left-censored missing value imputation approach for metabolomics studies. PLOS Computational Biology) <br/>
-https://github.com/juuussi/impute-metabo Kokla, M., Virtanen, J., Kolehmainen, M. et al. Random forest-based imputation outperforms 
-      other methods for imputing LC-MS metabolomics data: a comparative study. BMC Bioinformatics 20, 492 (2019). 
-      https://doi.org/10.1186/s12859-019-3110-0
-      
+Special thanks to the following work which was copied, modified and/or adapted to aid in the creation of this package: <br/>
+missCompare: https://github.com/Tirgit/missCompare, <br/>
+Wei, R, Wang, J, Jia, E, Chen, T, Ni, Y & Jia, W. (2017). GSimp: A Gibbs sampler based left-censored missing value imputation approach for metabolomics studies. PLOS Computational Biology. (https://github.com/WandeRum/GSimp) <br/>
+Kokla, M, Virtanen, J, Kolehmainen, M, Paananen J & Hanhineva K. (2019). Random forest-based imputation outperforms other methods for imputing LC-MS metabolomics data: a comparative study. BMC Bioinformatics 20, 492 (2019). (https://github.com/juuussi/impute-metabo)
+
+**Installation Note:** The most common issue with installation lies with three packages. pcaMethods and impute are unable to be compiled automatically, so they need to be installed separately from the Bioconductor repository using BiocManager::install(c("pcaMethods","impute")). The third is the PEMM package, which is no longer supported by CRAN and thus needs to be installed from archive. Once those three packages have been installed, please try installing MetabImpute again.
+
+## Load Example Data      
 
 ```{r, eval=FALSE, warning=FALSE,message=FALSE,error=FALSE}
-#Loading example data
-data<-read.csv(file='Test_set.csv')
-rownames(data)<-data[,1]
-data<-data[,-c(1)]
-data<-data.frame(lapply(data, function(x) as.numeric(as.character(x))), row.names = rownames(data))
-#Number of Replicates 
-reps<-5
+#Loading example data: a (samples x features) data frame or matrix
+data <- read.csv(file = 'Test_set.csv')
+rownames(data) = data[,1]
+data <- data[,-c(1)]
+data <- data.frame(lapply(data, function(x) as.numeric(as.character(x))), row.names = rownames(data))
 
+#Specify number of replicates
+reps = 5
 ```
 
 ## Variable Statistics and Cullen and Frey Plots
@@ -59,9 +57,9 @@ The **variableStatistics** function evaluates variable by variable statistics, m
 
 ```{r, eval=FALSE, warning=FALSE,message=FALSE,error=FALSE, results='hide'}
 #Variable Statistics Function
-var_Stats<-variableStatistics(data=data, 
-                              correlation_method = 'spearman', 
-                              gof_method = 'kolmogorov')
+var_Stats <- variableStatistics(data = data, 
+                                correlation_method = 'spearman', 
+                                gof_method = 'kolmogorov')
 ```
 ```{r, eval=FALSE}
 #Showing first two column of variable statistics 
@@ -114,32 +112,31 @@ CullenFrey(data)
 ## Imputation
 
 Two main functions may be used to impute. The **Impute** function does imputation with a single specified
-method, while **imputeMulti** does imputation using multiple included methods and returns a list of imputed matrices. The GSImp method was incorporated and slightly modified to handle the replicate imputation approach defined in our paper from: <br/>
+method, while **imputeMulti** does imputation using multiple included methods and returns a list of imputed matrices. The GSImp method was incorporated and slightly modified to handle the replicate imputation approach defined in our paper from Wei et al. (2017).
+ 
+Input information:
 
-https://github.com/WandeRum/GSimp (Wei, R., Wang, J., Jia, E., Chen, T., Ni, Y., & Jia, W. (2017). GSimp: 
-      A Gibbs sampler based left-censored missing value imputation approach for metabolomics studies. PLOS Computational Biology) <br/>
-      
-Input information: <br/>
+**method(s):** in **Impute**, a string from the following list: 'RF', 'BPCA', 'QRILC', 'GSIMP', 'RHM','RMEAN', 'RMEDIAN', 'RMIN','RZERO', 'RRF', 'RGSIMP', 'RQRILC','RBPCA','min','halfmin', 'mean', 'median', 'zero'.
 
-**method(s):** in **Impute** this is a string from the following list: 'RF', 'BPCA', 'QRILC', 'GSIMP', 'RHM','RMEAN', 'RMEDIAN', 'RMIN','RZERO', 'RRF', 'RGSIMP', 'RQRILC','RBPCA','min','halfmin', 'mean', 'median', 'zero'. In **imputeMulti** this
-is a vector containing a selection of these methods. Any function with R<imputation method> such as RHM or RRF 
-indicates that this is a within replicate method that first zeroes out any replicate groups for a variable where
-there is less than 50% present values. <br/>
-**local:** is a logical indicating if the user would like to use local imputation (if FALSE, this will use 
-global imputation). This only applies in single value imputation methods.<br/>
-**reps:** is the number of replicates. Note that nrow(data) must be divisible by reps. This package does not handle imbalanced replicate groups.<br/>
-**rep_threshold:** is the threshold value (a percent) representing the number of missing values per replicate which will permute the entire replicate to zero under the rep impute algorithm. As an example, if we have 5 replicates per group, and decide to zero out the replicate group if there are 4 or 5 NAs in the replicate, we would set our threshold to 4/5. If we wanted to zero out any group with 2 or more missing values, then we would choose 2/5. <br/>
+**imputeMulti:** this is a vector containing a selection of these methods. Any function with R<imputation method> such as RHM or RRF 
+indicates that this is a within replicate method that first zeroes out any replicate groups for a variable where there is less than 50% present values.
+
+**local:** a logical indicating if the user would like to use local imputation (if FALSE, this will use global imputation). This only applies in single value imputation methods.
+
+**reps:** the number of replicates. Note that nrow(data) must be divisible by reps. This package does not handle imbalanced replicate groups.
+
+**rep_threshold:** the threshold value (a percent) representing the number of missing values per replicate which will permute the entire replicate to zero under the rep impute algorithm. As an example, if we have 5 replicates per group, and decide to zero out the replicate group if there are 4 or 5 NAs in the replicate, we would set our threshold to 4/5. If we wanted to zero out any group with 2 or more missing values, then we would choose 2/5.
 
 ```{r, eval=FALSE,warning=FALSE,message=FALSE,error=FALSE,results='hide', fig.keep='none'}
 imp<-Impute(data=data, method="RF",local=T, reps=5, rep_threshold=0.5)
 
-impMulti<-imputeMulti(methods=c('RF', 'BPCA', 'QRILC', 'GSIMP', 'RHM','RMEAN', 
-                                'RMEDIAN', 'RMIN','RZERO', 'RRF','RGSIMP', 
-                                'RQRILC','RBPCA','min','halfmin', 'mean', 
-                                'median', 'zero'), 
-                      data, 
-                      reps = 5,
-                      rep_threshold=0.5)
+impMulti <- imputeMulti(methods = c('RF', 'BPCA', 'QRILC', 'GSIMP', 'RHM','RMEAN', 
+                                  'RMEDIAN', 'RMIN','RZERO', 'RRF','RGSIMP', 
+                                  'RQRILC','RBPCA','min','halfmin', 'mean', 
+                                  'median', 'zero'), 
+                        data, 
+                        reps = 5,
+                        rep_threshold = 0.5)
 ```
 
 ## ICC Evaluation
@@ -148,18 +145,18 @@ Since a primary focus of our paper and package is to provide imputation methods 
 technical replicates into account. This package includes several functions that can evaluate ICC changes 
 between imputed matrices. <br/>
       
-**Note: Prior to ICC evaluation, we utilized PQN normalization. This step is omitted in the package and is up to the user's discretion to apply or not apply** 
+**Note:** Prior to ICC evaluation, we utilized the signal noralization approach probabilistic quotient normalization. This step is omitted in the package and is up to the user's discretion to apply or not apply.
 
 The **iccEval** function returns a list of data frames containing the ICCs for each variable, and difference measures between the imputation methods and the last imputation method included, in the example below this is a comparison of the ICC of each imputation method from 'RF' to 'median' compared with the zero imputed data frame's ICC. The measure is done in 3 ways, average difference in ICC (with 95% CI), average absolute difference (with 95% CI) and average difference of squares (with 95% CI). Only the difference measure will be shown for brevity. Information on inputs: <br/>
 
 **imputed:** is a list of imputed matrices 
 ```{r, eval=FALSE}
-icc<-iccEval(origData=data, 
-             reps=5, 
-             imputed=impMulti, 
-             methods=c('RF', 'BPCA', 'QRILC', 'GSIMP','RHM','RMEAN', 'RMEDIAN', 
-                       'RMIN','RZERO', 'RRF','RGSIMP', 'RQRILC','RBPCA','min',
-                       'halfmin', 'mean', 'median', 'zero'))
+icc <- iccEval(origData = data, 
+               reps = 5, 
+               imputed = impMulti, 
+               methods  =c('RF', 'BPCA', 'QRILC', 'GSIMP','RHM','RMEAN', 'RMEDIAN', 
+                           'RMIN','RZERO', 'RRF','RGSIMP', 'RQRILC','RBPCA','min',
+                           'halfmin', 'mean', 'median', 'zero'))
 ```
 ```{r, eval=FALSE}
 #Showing the first 8 columns
@@ -190,11 +187,11 @@ icc$`Difference measure`[,1:8]
 The **ICC_Change_Plot** function plots the mean ICC change with CI of the imputed matrices compared with the zero matrix (in this case)
 ```{r, eval=FALSE}
 #Plotting the difference measure
-ICC_Change_Plot(iccMeasure=icc$`Difference measure`, 
-                methods=c('RF', 'BPCA', 'QRILC', 'GSIMP', 'RHM','RMEAN', 
-                          'RMEDIAN', 'RMIN','RZERO', 'RRF','RGSIMP', 'RQRILC',
-                          'RBPCA','min','halfmin', 'mean', 'median', 'zero'), 
-                title='difference')
+ICC_Change_Plot(iccMeasure = icc$`Difference measure`, 
+                methods = c('RF', 'BPCA', 'QRILC', 'GSIMP', 'RHM','RMEAN', 
+                            'RMEDIAN', 'RMIN','RZERO', 'RRF','RGSIMP', 'RQRILC',
+                            'RBPCA','min','halfmin', 'mean', 'median', 'zero'), 
+                title = 'difference')
 
 ```
 ![](icc_Change_Plot.png)
@@ -284,64 +281,70 @@ Input information: <br/>
 
 ```{r, eval=FALSE}
 #correlation matrix
-cormat<-correlationMatrix(data)
+cormat <- correlationMatrix(data)
+
 #Simulated data from missCompare
-simulated<-simulate(rownum = 30, 
-                    colnum=8, 
-                    corMat = cormat[[1]])
+simulated <- simulate(rownum = 30, 
+                      colnum = 8, 
+                      corMat = cormat[[1]])
+
 #Simulate missingness from impute-metabo
-sim_miss<-simulate_missingness(data=simulated, 
-                               mcar=0, 
-                               mar=0.2, 
-                               mnar=0.2)
+sim_miss <- simulate_missingness(data = simulated, 
+                                 mcar = 0, 
+                                 mar = 0.2, 
+                                 mnar = 0.2)
+
 #imputation using the impute function detailed above
-sim_impute<-impute(sim_miss, 
-                   method=c('RF'), 
-                   reps=5)
+sim_impute <- impute(sim_miss, 
+                     method = c('RF'), 
+                     reps = 5)
+
 #error evaluation functions adopted from impute-metabo
-errorEvals(origData=simulated, 
-           missData = sim_miss,method=c('NRMSE'), 
+errorEvals(origData = simulated, 
+           missData = sim_miss,method = c('NRMSE'), 
            imputationResults = list(sim_impute), 
            simulate_Data = T)
 ```
 
-The **simulateEngine** function wraps the above methods into a function which induces multiple levels of missingness proportions in multiple different missing mechanism ratios and can evaluate different imputation methods and the two error evaluation methods above. The **rearrangeList** function takes the output of the **simulateEngine** function and rearranges the data in a format that is simpler to plot. Inputs must match **simulateEngine** where indicated. **graphEval** takes the first list element of the output of rearrangeList as an input and creates ggplots for each missingness ratio supplied and for each error evalution method indicated. Finally, **plotResults** takes the output of **simulateEnging** and generates panel ggplots for each missingness condition (for both or one error evaluation method). Input information: <br/>
+The **simulateEngine** function wraps the above methods into a function which induces multiple levels of missingness proportions in multiple different missing mechanism ratios and can evaluate different imputation methods and the two error evaluation methods above. The **rearrangeList** function takes the output of the **simulateEngine** function and rearranges the data in a format that is simpler to plot. Inputs must match **simulateEngine** where indicated. **graphEval** takes the first list element of the output of rearrangeList as an input and creates ggplots for each missingness ratio supplied and for each error evalution method indicated. Finally, **plotResults** takes the output of **simulateEnging** and generates panel ggplots for each missingness condition (for both or one error evaluation method). 
+
+Input information: <br/>
 
 **simIter:** the number of simulated matrices to create and run (results will be averaged over these)<br/>
 **simMissIter:** the number of simulated missing matrices to create for each simulated matrix and for each missingness proportion<br/>
 **missMax:** the maximum proportion of missingness<br/>
 **missMin:** the minimum proportion of missingness<br/>
 **missInc:** the proportion of missingness to increment by<br/>
-**missRatios:** the different ratios of missingness by mechanism (should add up to 1) to impose at a given missingness proportion. Every triplet corresponds to a single missingness case. c(MCAR1, MAR1, MNAR1, MCAR2, MAR2, MNAR2, MCAR3...). Eg if we wanted to mix missingness between all three mechanisms as well as run a mix of 50% of MCAR and 50% of MNAR the list would include
-c(0.33,0.33, 0.34, 0.5, 0, 0.5). Note that the order of missingness proportions is MCAR, MAR, MNAR. <br/>
+**missRatios:** the different ratios of missingness by mechanism (should add up to 1) to impose at a given missingness proportion. Every triplet corresponds to a single missingness case. c(MCAR1, MAR1, MNAR1, MCAR2, MAR2, MNAR2, MCAR3...). For example, if we wanted to mix missingness between all three mechanisms as well as run a mix of 50% of MCAR and 50% of MNAR the list would include c(0.33,0.33, 0.34, 0.5, 0, 0.5). Note that the order of missingness proportions is MCAR, MAR, MNAR. <br/>
 **methodsEval:** the list of error evaluations to perform<br/>
 **threshold:** is analagous to **rep_threshold** in the impute function and should match.
 
 ```{r, eval=FALSE}
 #simulates data, simulates missingness at different percent missingness
-sim_engine<-simulateEngine(data=as.data.frame(data), 
-                           simIter = 1, 
-                           simMissIter = 2, 
-                           missMax = 0.4, 
-                           missMin = 0.1,
-                           missInc = 0.1, 
-                           missRatios = c(0,0,1,0,1,0), 
-                           methodsImp = c('RF', 'RBPCA','min'), 
-                           methodsEval = c('NRMSE', 'PCA-P'),
-                           reps=5, 
-                           threshold=0.5,
-                           simulate_Data = T)
+sim_engine <- simulateEngine(data = as.data.frame(data), 
+                             simIter = 1, 
+                             simMissIter = 2, 
+                             missMax = 0.4, 
+                             missMin = 0.1,
+                             missInc = 0.1, 
+                             missRatios = c(0,0,1,0,1,0), 
+                             methodsImp = c('RF', 'RBPCA','min'), 
+                             methodsEval = c('NRMSE', 'PCA-P'),
+                             reps = 5, 
+                             threshold = 0.5,
+                             simulate_Data = T)
 
 #rearranges results into a list of DFs that are easier to plot with GGPlot2
-results<-rearrangeList(result = sim_engine)
+results <- rearrangeList(result = sim_engine)
 
 #GGplot2 dataframes are contained in rearrangeList output's first element
-graphs<-graphEval(results[[1]])
+graphs <- graphEval(results[[1]])
+
 #panel plot, only first one is produced corresponding to the first missingness ratio inputted. 
-grid.arrange(grobs=graphs[[1]], top=names(graphs)[1], ncol=2)
+grid.arrange(grobs = graphs[[1]], top = names(graphs)[1], ncol = 2)
 
 #function to produce ggplots without using the previous two lines of code
-plotResults(results=sim_engine)
+plotResults(results = sim_engine)
 
 
 ```
