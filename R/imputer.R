@@ -1,21 +1,18 @@
 
 
 
-#' Title Impute
-#' This functions contains different imputation methods and imputes the data with all
-#' the different imputation methods
-#' @param data data matrix with simulated data
-#' @param method the imputation method Note within replicate methods are preceded by 'R', eg 'RMIN'
+#' A function to impute missing data. Options are to impute within-replicates or globally across the entire data set.
+#' @param data A (sample x feature) data matrix or data frame with data to be imputed.
+#' @param method The imputation method. Note: within-replicate methods are preceded by 'R' (e.g., 'RMIN').
 #' method=c('RF', 'BPCA', 'QRILC', 'GSIMP', 'RHM','RMEAN', 'RMEDIAN', 'RMIN','RZERO', 'RRF',
 #' 'RGSIMP', 'RQRILC','RBPCA','min','halfmin', 'mean', 'median', 'zero')
-#' @param local a boolean to determine if local rep_impute method is to be used, default to true.
-#' @param reps the number of replicate groups
-#' simulated data that doesn't require log preprocessing.
-#' @param rep_threshold the threshold value for number of NA values over which the entire replicate group
-#' is permuted to 0. For example. If I have 5 replicates, and set my threshold to 3/5, then any group with 
-#' 3 NAs, 4 NAs and 5 NAs will be permuted to zero (including the present values), those replicate groups 
-#' where there are 2 NAs, 1 NA or 0 NAs will be left for imputation based upon your given method. 
-#' @return results_data the matrix containing the imputed data
+#' @param local A boolean specifying whether or not local rep_impute method is to be used (default to True).
+#' @param reps The number of replicate groups (for local imputation).
+#' @param rep_threshold The threshold value for number of missing values (NAs) over which the entire replicate group
+#' is permuted to zero. For example, if there are five replicates and the threshold is set to 3/5, then any replicate 
+#' group with 3 NAs, 4 NAs, and 5 NAs will be imputed to zero and the present values permuted to zero. Replicate groups 
+#' where there are 2 NAs, 1 NA, or 0 NAs will be unchanged. 
+#' @return results_data The imputed data matrix or data frame.
 #' @export
 #'
 #' @examples
